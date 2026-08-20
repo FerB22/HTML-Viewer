@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.HTMLReader" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@color/bg_primary</item>
+        <item name="android:statusBarColor">@color/bg_toolbar</item>
+        <item name="android:navigationBarColor">@color/bg_primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
+        <!-- Material 3 Surface Tint & Elevation overrides -->
+        <item name="elevationOverlayEnabled">false</item>
+        <item name="colorPrimary">@color/accent_purple</item>
+        <item name="colorSurface">@color/bg_toolbar</item>
+        <item name="colorContainer">@color/bg_toolbar</item>
+    </style>
+
+    <style name="Theme.HTMLReader" parent="Base.Theme.HTMLReader" />
+</resources>

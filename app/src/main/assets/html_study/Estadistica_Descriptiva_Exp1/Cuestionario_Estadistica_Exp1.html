@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Cuestionario Interactivo - Estadística Descriptiva (Experiencia 1)</title>
+  <meta name="description" content="Plataforma de práctica y autoevaluación interactiva sobre conceptos fundamentales de Estadística Descriptiva: Población, Muestra, Variables, Tablas de Frecuencia, Gráficos, Tendencia Central, Dispersión y Pandas.">
+  
+  <!-- KaTeX CSS & JS for LaTeX Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Google Fonts: Outfit & Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti for celebrations -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+
+html, body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+header, .header-content, .container, .sidebar, .card, .quiz-area, .hud-bar, .question-card, .options-grid, .option-row, footer {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.option-row .option-btn {
+  min-width: 0; /* Previene desbordamiento en Flexbox */
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --primary-dark: #3730a3;
+      --accent: #06b6d4;
+      --accent-hover: #0891b2;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --success-border: #a7f3d0;
+      --error: #ef4444;
+      --error-light: #fef2f2;
+      --error-border: #fecaca;
+      --warning: #f59e0b;
+      --warning-light: #fffbeb;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-500: #64748b;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+      
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-header: linear-gradient(135deg, #d97706 0%, #ff9e1f 50%, #f59e0b 100%);
+      --text-main: #334155;
+      --text-title: #0f172a;
+      --text-muted: #64748b;
+      --card-border: #e2e8f0;
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+      --card-shadow-hover: 0 20px 30px -10px rgba(79, 70, 229, 0.15);
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg-body: #090d16;
+      --bg-card: #131a2a;
+      --bg-header: linear-gradient(135deg, #030712 0%, #78350f 50%, #b45309 100%);
+      --text-main: #cbd5e1;
+      --text-title: #f8fafc;
+      --text-muted: #94a3b8;
+      --card-border: #1e293b;
+      --slate-100: #1e293b;
+      --slate-200: #334155;
+      --primary-light: rgba(79, 70, 229, 0.15);
+      --success-light: rgba(16, 185, 129, 0.15);
+      --success-border: #059669;
+      --error-light: rgba(239, 68, 68, 0.15);
+      --error-border: #dc2626;
+      --warning-light: rgba(245, 158, 11, 0.15);
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    
+/* ============================================================
+   TOOLBAR ADAPTATIVA Y CABECERA FLUIDA
+   ============================================================ */
+header {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: max(1.25rem, env(safe-area-inset-top, 1.25rem)) 1.5rem 1rem !important;
+  box-sizing: border-box !important;
+  position: relative !important; /* Flujo limpio en el documento */
+  z-index: 100 !important;
+}
+
+.header-content {
+  width: 100% !important;
+  max-width: 1320px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  box-sizing: border-box !important;
+}
+
+.brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  overflow: hidden !important;
+}
+
+.brand-icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: var(--radius-md) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.3rem !important;
+  flex-shrink: 0 !important;
+}
+
+.brand-text {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.brand-text h1 {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.15 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  margin: 0 !important;
+}
+
+.brand-text p {
+  font-size: 0.78rem !important;
+  margin: 0 !important;
+  opacity: 0.9 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Toolbar Unificada Adaptativa (Agrupada en una sola cápsula) */
+.header-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  background: rgba(0, 0, 0, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 3px !important;
+  border-radius: var(--radius-lg) !important;
+  gap: 3px !important;
+  backdrop-filter: blur(8px) !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.btn-header {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+  padding: 0.4rem 0.65rem !important;
+  border-radius: var(--radius-md) !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.35rem !important;
+  transition: var(--transition) !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.btn-header:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  transform: translateY(-1px) !important;
+}
+
+.btn-header.active {
+  background: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* En Móviles (<= 960px): Ocultar texto secundario y dejar la barra de botones compacta */
+@media (max-width: 960px) {
+  header {
+    padding: max(1.75rem, env(safe-area-inset-top, 1.75rem)) 0.85rem 0.75rem !important;
+  }
+
+  .brand-text h1 {
+    font-size: 1.02rem !important;
+  }
+
+  .brand-text p {
+    display: none !important; /* Ocultar subtítulo para máxima limpieza */
+  }
+
+  .hide-mobile, #shuffleText {
+    display: none !important; /* Ocultar texto largo en botones */
+  }
+
+  .btn-header {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    padding: 0 !important;
+    font-size: 1.15rem !important;
+  }
+
+  .container {
+    grid-template-columns: 1fr !important;
+    margin: 1rem auto !important;
+    padding: 0 0.85rem !important;
+    gap: 1.25rem !important;
+  }
+
+  .sidebar {
+    position: static !important;
+    width: 100% !important;
+  }
+}
+
+
+.container {
+      max-width: 1280px;
+      margin: 1.75rem auto;
+      padding: 0 1.25rem;
+      width: 100%;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .container {
+        grid-template-columns: 1fr;
+        margin: 1rem auto;
+        padding: 0 0.85rem;
+        gap: 1.25rem;
+      }
+
+      .sidebar {
+        position: static !important;
+        top: auto !important;
+        width: 100%;
+      }
+
+      header {
+        position: static;
+      }
+    }
+
+    /* Sidebar Filters & Stats */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: sticky;
+      top: 5.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--card-shadow);
+      padding: 1.25rem;
+      transition: var(--transition);
+    }
+
+    .sidebar-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .cat-btn {
+      width: 100%;
+      text-align: left;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition);
+    }
+
+    .cat-btn:hover {
+      background: var(--slate-100);
+      color: var(--primary);
+    }
+
+    .cat-btn.active {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: rgba(79, 70, 229, 0.3);
+      font-weight: 600;
+    }
+
+    .cat-badge {
+      background: var(--slate-200);
+      color: var(--text-title);
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .cat-btn.active .cat-badge {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    /* Quick Stats Card */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .stat-item {
+      background: var(--slate-100);
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-title);
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.2rem;
+    }
+
+    /* Main Quiz View */
+    .quiz-area {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* Top Progress Bar & HUD */
+    .hud-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.4rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .progress-wrapper {
+      flex: 1;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 9px;
+      background: var(--slate-200);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 20px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .hud-stats {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .badge-hud {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: var(--slate-100);
+      color: var(--text-title);
+    }
+
+    .badge-streak {
+      color: #ea580c;
+      background: #fff7ed;
+      border: 1px solid #ffedd5;
+    }
+
+    /* Question Card */
+    .question-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--card-shadow);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+      animation: fadeIn 0.35s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.2rem;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .difficulty-tag {
+      margin-left: 0.5rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .diff-easy { background: var(--success-light); color: var(--success); }
+    .diff-medium { background: var(--warning-light); color: var(--warning); }
+    .diff-hard { background: var(--error-light); color: var(--error); }
+
+    /* Context Scenario Card (for Real-World Cases) */
+    .context-box {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.04) 0%, rgba(6, 182, 212, 0.06) 100%);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .context-title {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .question-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-title);
+      line-height: 1.4;
+      margin-bottom: 1.75rem;
+    }
+
+    /* Code Block styling */
+    .code-snippet {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--slate-900);
+      color: #e2e8f0;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      margin: 0.75rem 0 1.25rem 0;
+      overflow-x: auto;
+      border: 1px solid var(--slate-700);
+      line-height: 1.5;
+    }
+
+    .code-snippet .keyword { color: #f43f5e; font-weight: 600; }
+    .code-snippet .func { color: #38bdf8; }
+    .code-snippet .string { color: #a3e635; }
+    .code-snippet .comment { color: #94a3b8; font-style: italic; }
+
+    /* Options List */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .option-btn {
+      width: 100%;
+      background: var(--bg-card);
+      border: 2px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.05rem 1.25rem;
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.98rem;
+      color: var(--text-main);
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateX(4px);
+    }
+
+    .option-letter {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      border-radius: 50%;
+      background: var(--slate-100);
+      color: var(--slate-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: var(--transition);
+    }
+
+    .option-btn:hover:not(:disabled) .option-letter {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .option-content {
+      flex: 1;
+      padding-top: 0.15rem;
+    }
+
+    /* Correct & Incorrect States */
+    .option-btn.correct {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      color: #065f46 !important;
+    }
+
+    .option-btn.correct .option-letter {
+      background: var(--success) !important;
+      color: #ffffff !important;
+    }
+
+    .option-btn.incorrect {
+      background: var(--error-light) !important;
+      border-color: var(--error) !important;
+      color: #991b1b !important;
+    }
+
+    .option-btn.incorrect .option-letter {
+      background: var(--error) !important;
+      color: #ffffff !important;
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+      opacity: 0.85;
+    }
+
+    /* Explanation & Hint Box */
+    .feedback-box {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      border-radius: var(--radius-md);
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .feedback-box.visible {
+      display: block;
+    }
+
+    .feedback-box.correct {
+      background: var(--success-light);
+      border: 1px solid var(--success-border);
+      color: #065f46;
+    }
+
+    .feedback-box.incorrect {
+      background: var(--error-light);
+      border: 1px solid var(--error-border);
+      color: #991b1b;
+    }
+
+    .feedback-header {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feedback-body {
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: var(--text-main);
+    }
+
+    .hint-box {
+      background: var(--warning-light);
+      border: 1px solid #fde68a;
+      color: #92400e;
+      padding: 1rem 1.2rem;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .hint-box.visible {
+      display: block;
+    }
+
+    /* Action Footer in Question */
+    .quiz-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.35rem;
+      border-radius: var(--radius-md);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: var(--slate-100);
+      color: var(--text-title);
+    }
+
+    .btn-secondary {
+      background: var(--slate-100);
+      color: var(--text-title);
+    }
+
+    .btn-secondary:hover {
+      background: var(--slate-200);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Results Screen */
+    .results-screen {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--card-shadow);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .results-screen.visible {
+      display: block;
+    }
+
+    .trophy-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+      animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
+    .results-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-bottom: 0.5rem;
+    }
+
+    .results-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+    }
+
+    .score-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-light), rgba(6, 182, 212, 0.2));
+      border: 6px solid var(--primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+    }
+
+    .score-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .score-total {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .results-breakdown {
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      text-align: left;
+      background: var(--slate-50);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      border: 1px solid var(--card-border);
+    }
+
+    .breakdown-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--slate-200);
+      font-size: 0.92rem;
+    }
+
+    .breakdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .breakdown-name {
+      font-weight: 600;
+      color: var(--text-title);
+    }
+
+    .breakdown-score {
+      font-weight: 700;
+    }
+
+    .results-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Modal for Quick Theory / Formulas */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--bg-card);
+      width: 100%;
+      max-width: 800px;
+      max-height: 85vh;
+      border-radius: var(--radius-xl);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: zoomIn 0.25s ease;
+    }
+
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.75rem;
+      background: var(--slate-100);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      color: var(--text-title);
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+    }
+
+    .btn-close:hover {
+      color: var(--text-title);
+    }
+
+    .modal-body {
+      padding: 1.75rem;
+      overflow-y: auto;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+
+    .theory-section {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .theory-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .theory-section h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .theory-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0;
+      font-size: 0.88rem;
+    }
+
+    .theory-table th, .theory-table td {
+      border: 1px solid var(--card-border);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+    }
+
+    .theory-table th {
+      background: var(--slate-100);
+      color: var(--text-title);
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      background: var(--bg-card);
+      margin-top: auto;
+    }
+  
+    
+    /* Options Grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .option-row .option-btn {
+      flex: 1;
+      background: var(--bg-card);
+      border: 2px solid var(--card-border);
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      color: var(--text-main);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: var(--transition);
+      outline: none;
+    }
+
+    /* Botón de Descarte Externo (Equis ✕ fuera de la alternativa) */
+    .btn-discard-outside {
+      background: var(--bg-card);
+      border: 2px solid var(--card-border);
+      color: var(--slate-400);
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 700;
+      transition: var(--transition);
+      flex-shrink: 0;
+      box-shadow: var(--card-shadow);
+      outline: none;
+    }
+
+    .btn-discard-outside:hover:not(:disabled) {
+      background: var(--error-light);
+      color: var(--error);
+      border-color: var(--error-border);
+      transform: scale(1.08);
+    }
+
+    /* Estado de Alternativa Descartada */
+    .option-row.discarded .option-btn {
+      opacity: 0.4;
+      background: var(--slate-100) !important;
+      border-color: var(--slate-300) !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+
+    .option-row.discarded .option-content {
+      text-decoration: line-through;
+      color: var(--slate-500);
+    }
+
+    .option-row.discarded .option-letter {
+      background: var(--slate-200);
+      color: var(--slate-500);
+    }
+
+    .option-row.discarded .btn-discard-outside {
+      background: var(--error);
+      color: #ffffff;
+      border-color: var(--error);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+    }
+
+    [data-theme="dark"] .btn-discard-outside {
+      background: var(--bg-card);
+      border-color: var(--card-border);
+      color: var(--slate-400);
+    }
+
+    [data-theme="dark"] .option-row.discarded .option-btn {
+      background: #0f172a !important;
+      border-color: #1e293b !important;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-light) !important;
+      color: #065f46;
+      font-weight: 500;
+      opacity: 1 !important;
+    }
+
+    .option-btn.correct .option-content {
+      text-decoration: none !important;
+    }
+
+    .option-btn.correct .option-letter {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .option-btn.incorrect {
+      border-color: var(--error);
+      background: var(--error-light) !important;
+      color: #991b1b;
+      opacity: 1 !important;
+    }
+
+    .option-btn.incorrect .option-letter {
+      background: var(--error);
+      color: #ffffff;
+    }
+
+    .option-btn:disabled, .btn-discard-outside:disabled {
+      cursor: default;
+    }
+
+
+  
+    header {
+      background: var(--bg-header);
+      background-color: #FF9E1F;
+      color: #ffffff;
+      padding: max(1.25rem, env(safe-area-inset-top, 1.25rem)) 2rem 1.15rem;
+      box-shadow: 0 4px 20px rgba(255, 158, 31, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .brand-text p {
+      font-size: 0.82rem;
+      color: #fef3c7;
+      font-weight: 400;
+    }
+
+    
+
+  
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="header-content">
+      <div class="brand">
+        <div class="brand-icon">📊</div>
+        <div class="brand-text">
+          <h1>Estadística Descriptiva · Experiencia 1</h1>
+          <p>Banco de Cuestionarios y Casos Prácticos Interactivos</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-header" id="btnOpenTheory" title="Ver Resumen Teórico y Glosario">
+          <span>📖</span> <span class="hide-mobile">Resumen Teórico</span>
+        </button>
+        <button class="btn-header" id="btnToggleShuffle" title="Modo Aleatorio">
+          <span id="shuffleIcon">🔀</span> <span class="hide-mobile" id="shuffleText">Aleatorio: OFF</span>
+        </button>
+        <button class="btn-header" id="btnThemeToggle" title="Cambiar Tema Oscuro/Claro">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+    
+    <!-- Sidebar / Filters -->
+    <aside class="sidebar">
+      <!-- Filter Card -->
+      <div class="card">
+        <h2 class="sidebar-title">
+          <span>🎯</span> Módulos Temáticos
+        </h2>
+        <div class="category-list" id="categoryList">
+          <button class="cat-btn active" data-cat="all">
+            <span>🌟 Todos los Temas (Examen)</span>
+            <span class="cat-badge" id="badge-all">42</span>
+          </button>
+          <button class="cat-btn" data-cat="poblacion">
+            <span>👥 Población vs. Muestra</span>
+            <span class="cat-badge" id="badge-poblacion">8</span>
+          </button>
+          <button class="cat-btn" data-cat="variables">
+            <span>🏷️ Tipos de Variables</span>
+            <span class="cat-badge" id="badge-variables">6</span>
+          </button>
+          <button class="cat-btn" data-cat="python">
+            <span>🐍 Python & Pandas</span>
+            <span class="cat-badge" id="badge-python">6</span>
+          </button>
+          <button class="cat-btn" data-cat="frecuencias">
+            <span>📊 Tablas de Frecuencia</span>
+            <span class="cat-badge" id="badge-frecuencias">7</span>
+          </button>
+          <button class="cat-btn" data-cat="graficos">
+            <span>📈 Gráficos Estadísticos</span>
+            <span class="cat-badge" id="badge-graficos">5</span>
+          </button>
+          <button class="cat-btn" data-cat="tendencia">
+            <span>⚖️ Tendencia Central & Percentiles</span>
+            <span class="cat-badge" id="badge-tendencia">5</span>
+          </button>
+          <button class="cat-btn" data-cat="dispersion">
+            <span>📉 Dispersión & Homogeneidad</span>
+            <span class="cat-badge" id="badge-dispersion">5</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Stats Card -->
+      <div class="card">
+        <h2 class="sidebar-title">
+          <span>⚡</span> Rendimiento
+        </h2>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value" id="statScore">0</div>
+            <div class="stat-label">Puntos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="statAccuracy">0%</div>
+            <div class="stat-label">Aciertos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="statStreak">0</div>
+            <div class="stat-label">Racha Máx</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="statAnswered">0</div>
+            <div class="stat-label">Respondidas</div>
+          </div>
+        </div>
+        <button class="btn btn-outline" id="btnResetProgress" style="width: 100%; margin-top: 0.85rem; font-size: 0.82rem; padding: 0.5rem; justify-content: center;">
+          <span>🔄</span> Reiniciar este módulo
+        </button>
+      </div>
+    </aside>
+
+    <!-- Quiz Area -->
+    <section class="quiz-area">
+      
+      <!-- Progress Bar & HUD -->
+      <div class="hud-bar" id="hudBar">
+        <div class="progress-wrapper">
+          <div class="progress-info">
+            <span id="questionCounter">Pregunta 1 de 42</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+        <div class="hud-stats">
+          <div class="badge-hud badge-streak" id="streakBadge">
+            🔥 <span id="currentStreak">0</span> racha
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Question Card -->
+      <div class="question-card" id="questionCard">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+          <div>
+            <span class="question-tag" id="tagCategory">👥 Población y Muestra</span>
+            <span class="difficulty-tag diff-easy" id="tagDifficulty">Fácil</span>
+          </div>
+          <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 500;" id="questionIdBadge">#P-01</span>
+        </div>
+
+        <!-- Optional Context Box (For Real Lab Cases) -->
+        <div class="context-box" id="contextBox" style="display: none;">
+          <div class="context-title">
+            <span>📋</span> Contexto del Estudio
+          </div>
+          <div id="contextContent"></div>
+        </div>
+
+        <!-- Question Prompt -->
+        <h2 class="question-text" id="questionText">Cargando pregunta...</h2>
+
+        <!-- Optional Code Snippet -->
+        <div class="code-snippet" id="codeSnippet" style="display: none;"></div>
+
+        <!-- Multiple Choice Options -->
+        <div class="options-grid" id="optionsGrid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Hint Box -->
+        <div class="hint-box" id="hintBox">
+          <strong>💡 Pista conceptual:</strong> <span id="hintText"></span>
+        </div>
+
+        <!-- Feedback / Explanation Box -->
+        <div class="feedback-box" id="feedbackBox">
+          <div class="feedback-header" id="feedbackHeader">
+            <span>✅</span> ¡Respuesta Correcta!
+          </div>
+          <div class="feedback-body" id="feedbackExplanation"></div>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="quiz-footer">
+          <button class="btn btn-outline" id="btnShowHint">
+            <span>💡</span> Ver Pista
+          </button>
+          
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="btn btn-secondary" id="btnPrev" style="display: none;">
+              ← Anterior
+            </button>
+            <button class="btn btn-primary" id="btnNext" disabled>
+              Siguiente Pregunta →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results View (Shown at the end) -->
+      <div class="results-screen" id="resultsScreen">
+        <div class="trophy-icon" id="resultsTrophy">🏆</div>
+        <h2 class="results-title" id="resultsTitle">¡Cuestionario Completado!</h2>
+        <p class="results-subtitle" id="resultsSubtitle">Has finalizado todas las preguntas del módulo seleccionado.</p>
+        
+        <div class="score-circle">
+          <div class="score-number" id="finalScore">0</div>
+          <div class="score-total" id="finalTotal">de 42</div>
+        </div>
+
+        <div class="results-breakdown" id="resultsBreakdown">
+          <!-- Breakdown per category populated by JS -->
+        </div>
+
+        <div class="results-actions">
+          <button class="btn btn-primary" id="btnRestart">
+            <span>🔄</span> Repetir Cuestionario
+          </button>
+          <button class="btn btn-secondary" id="btnRetryWrong" style="display: none;">
+            <span>❌</span> Reintentar Solo Errores
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Modal: Resumen Teórico y Glosario -->
+  <div class="modal-backdrop" id="theoryModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>📖 Resumen Teórico y Fórmulas Clave (Experiencia 1)</h3>
+        <button class="btn-close" id="btnCloseTheory">&times;</button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Section 1 -->
+        <div class="theory-section">
+          <h4>👥 1. Población ($\mathcal{N}$) vs. Muestra ($n$)</h4>
+          <p><strong>Población:</strong> El conjunto completo y total de individuos, objetos, transacciones o elementos que cumplen la definición del estudio (ej. <em>Todos los estudiantes de informática de la universidad</em> o <em>Todos los problemas reportados en el semestre</em>).</p>
+          <p><strong>Muestra:</strong> El subconjunto representativo efectivamente medido o encuestado para recolectar datos (ej. <em>Los 300 estudiantes que contestaron</em> o <em>Los 250 reportes analizados</em>).</p>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="theory-section">
+          <h4>🏷️ 2. Clasificación de Variables</h4>
+          <table class="theory-table">
+            <thead>
+              <tr>
+                <th>Tipo de Variable</th>
+                <th>Definición</th>
+                <th>Ejemplos Reales del Curso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cualitativa Nominal</strong></td>
+                <td>Categorías sin orden o jerarquía natural.</td>
+                <td>Red social preferida, Carrera, Región, Tipo de problema técnico, Película vs. Serie.</td>
+              </tr>
+              <tr>
+                <td><strong>Cualitativa Ordinal</strong></td>
+                <td>Categorías con un orden o jerarquía intrínseca.</td>
+                <td>Gravedad de falla (<em>Leve, Media, Crítica</em>), Nivel de satisfacción (<em>Insatisfecho a Muy Satisfecho</em>).</td>
+              </tr>
+              <tr>
+                <td><strong>Cuantitativa Discreta</strong></td>
+                <td>Conteo numérico entero (sin decimales intermedios).</td>
+                <td>N° de asignaturas reprobadas, N° de televisores, N° de fallas, N° de personas en el hogar.</td>
+              </tr>
+              <tr>
+                <td><strong>Cuantitativa Continua</strong></td>
+                <td>Medición numérica en escala real continua (con decimales).</td>
+                <td>Tiempo de resolución (min/hrs), Sueldo (USD/Pesos), Puntaje de felicidad (0 a 10), Puntaje SIMCE.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><em>⚠️ Error Crítico:</em> Codificar regiones o comunas con números (ej. Región 13) <strong>no</strong> las vuelve cuantitativas. Calcularles el promedio carece por completo de sentido estadístico.</p>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="theory-section">
+          <h4>📊 3. Tablas de Frecuencia y Reglas Canónicas</h4>
+          <table class="theory-table">
+            <thead>
+              <tr>
+                <th>Símbolo</th>
+                <th>Nombre</th>
+                <th>Fórmula</th>
+                <th>Interpretación Canónica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>$f_i$</td>
+                <td>Frecuencia Absoluta</td>
+                <td>$\sum f_i = n$</td>
+                <td>"Exactamente $f_i$ individuos presentaron el valor $i$."</td>
+              </tr>
+              <tr>
+                <td>$h_i$ / $h_i\%$</td>
+                <td>Frecuencia Relativa</td>
+                <td>$h_i = f_i / n$</td>
+                <td>"El $h_i\%$ del total corresponde a la categoría $i$."</td>
+              </tr>
+              <tr>
+                <td>$F_i$</td>
+                <td>Frecuencia Abs. Acumulada</td>
+                <td>$f_1 + \dots + f_i$</td>
+                <td>"Un total de $F_i$ individuos tuvieron <strong>como máximo / a lo sumo</strong> el valor $i$."</td>
+              </tr>
+              <tr>
+                <td>$H_i$ / $H_i\%$</td>
+                <td>Frecuencia Rel. Acumulada</td>
+                <td>$h_1 + \dots + h_i$</td>
+                <td>"El $H_i\%$ de la muestra presenta un valor menor o igual al límite del intervalo $i$."</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><em>Nota:</em> Las frecuencias acumuladas ($F_i, H_i$) <strong>solo</strong> aplican a variables cuantitativas y cualitativas ordinales (carecen de sentido en nominales).</p>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="theory-section">
+          <h4>📈 4. Matriz de Selección de Gráficos</h4>
+          <p>• <strong>Cualitativa ($\le 5$ categorías):</strong> Gráfico Circular (Torta) o Barras.</p>
+          <p>• <strong>Cualitativa ($> 5$ categorías):</strong> Gráfico de Barras horizontales o verticales.</p>
+          <p>• <strong>Cuantitativa Discreta:</strong> Gráfico de Barras separadas / Diagrama de bastones.</p>
+          <p>• <strong>Cuantitativa Continua (agrupada en intervalos):</strong> <strong>Histograma</strong> (barras contiguas sin separación para representar continuidad) y Polígono de frecuencias.</p>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="theory-section">
+          <h4>⚖️ 5. Tendencia Central, Asimetría y Dispersión</h4>
+          <p>• <strong>Media ($\bar{x}$):</strong> Punto de equilibrio. Muy sensible a valores extremos (outliers).</p>
+          <p>• <strong>Mediana ($Me = P_{50}$):</strong> Divide los datos en 50% inferior y 50% superior. Robusta e insensible a outliers.</p>
+          <p>• <strong>Regla de Asimetría:</strong> Si $\bar{x} > Me \rightarrow$ <strong>Asimetría Positiva (sesgo a la derecha)</strong> por sueldos/valores muy altos. La <strong>Mediana</strong> es más representativa.</p>
+          <p>• <strong>Coeficiente de Variación:</strong> $CV = \left(\frac{s}{\bar{x}}\right) \times 100\%$. Adimensional.</p>
+          <p>• <strong>Criterio de Homogeneidad:</strong> Si $CV \le 30\% \rightarrow$ Datos <strong>homogéneos</strong> (baja dispersión relativa, la media es muy representativa). Si $CV > 30\% \rightarrow$ Datos <strong>heterogéneos</strong>.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Asignatura de Estadística Descriptiva (MAT4141) · Plataforma de Aprendizaje y Autoevaluación Interactiva</p>
+    <p style="margin-top: 0.35rem; color: var(--slate-400);">Desarrollado para optimizar el estudio práctico de laboratorios y conceptos estadísticos.</p>
+  </footer>
+
+  <!-- Interactive JavaScript Engine -->
+  <script>
+    /* ============================================================
+       BANCO COMPLETO DE PREGUNTAS DE EXPERIENCIA 1 (42 Preguntas)
+       ============================================================ */
+    const QUESTION_BANK = [
+      // ------------------------------------------------------------------------
+      // 1. POBLACIÓN Y MUESTRA EN CONTEXTO (8 Preguntas)
+      // ------------------------------------------------------------------------
+      {
+        id: "POB-01",
+        category: "poblacion",
+        categoryLabel: "👥 Población y Muestra",
+        difficulty: "Fácil",
+        context: "Una universidad realizó una encuesta a estudiantes de carreras de informática para conocer su comportamiento digital (edad, red social preferida, horas de uso diario y satisfacción con internet). Respondieron la encuesta 300 estudiantes.",
+        question: "¿Cuál es la **población** estadística de este estudio?",
+        options: [
+          "Los 300 estudiantes de informática que completaron la encuesta.",
+          "Todos los estudiantes pertenecientes a las carreras de informática de esa universidad.",
+          "Todos los estudiantes universitarios y escolares del país.",
+          "El conjunto de computadores y redes de la universidad."
+        ],
+        correctIndex: 1,
+        hint: "Recuerda que la población es el universo completo o conjunto total de interés sobre el cual se quieren obtener conclusiones.",
+        explanation: "La **población** está conformada por la totalidad de estudiantes que pertenecen a las carreras de informática de dicha universidad. Los 300 estudiantes que efectivamente respondieron conforman únicamente la **muestra** ($n = 300$)."
+      },
+      {
+        id: "POB-02",
+        category: "poblacion",
+        categoryLabel: "👥 Población y Muestra",
+        difficulty: "Fácil",
+        context: "Una empresa de telecomunicaciones analizó durante un semestre una base de datos con 250 problemas técnicos reportados por sus usuarios (tipo de problema, tiempo de resolución, región y gravedad).",
+        question: "En este caso, ¿cuál es la **muestra** del estudio?",
+        options: [
+          "Todos los clientes con contrato activo en la empresa de telecomunicaciones.",
+          "La totalidad de fallas técnicas ocurridas en la historia de las telecomunicaciones.",
+          "Los 250 problemas técnicos registrados y analizados durante el semestre.",
+          "El tiempo total en horas que demoró en atenderse a los clientes."
+        ],
+        correctIndex: 2,
+        hint: "La muestra es el subconjunto específico de registros o elementos que se extrajeron para realizar el análisis.",
+        explanation: "La **muestra** es el grupo de $n = 250$ problemas técnicos específicamente seleccionados y medidos en la base de datos."
+      },
+      {
+        id: "POB-03",
+        category: "poblacion",
+        categoryLabel: "👥 Población y Muestra",
+        difficulty: "Intermedio",
+        context: "Según el Monitor Global de Educación de Ipsos (2023), se aplicó una encuesta en línea a 23.248 personas adultas en 29 países para conocer su opinión sobre si los profesores deben capacitarse en Inteligencia Artificial.",
+        question: "¿Cuál es la **población** y cuál es la **muestra** de esta investigación?",
+        options: [
+          "Población: Los 23.248 encuestados. Muestra: Las personas de los 29 países.",
+          "Población: La población adulta de los 29 países estudiados. Muestra: Las 23.248 personas que respondieron la encuesta.",
+          "Población: Todos los profesores del mundo. Muestra: Los estudiantes de colegios.",
+          "Población: La Inteligencia Artificial. Muestra: El 65% que votó a favor."
+        ],
+        correctIndex: 1,
+        hint: "Distingue entre el universo de personas al que representan los resultados y el número exacto de individuos que respondieron.",
+        explanation: "La población corresponde al conjunto global de personas adultas de los 29 países seleccionados, mientras que la muestra $n$ está compuesta exactamente por las 23.248 personas que participaron efectivamente contestando la encuesta."
+      },
+      {
+        id: "POB-04",
+        category: "poblacion",
+        categoryLabel: "👥 Población y Muestra",
+        difficulty: "Intermedio",
+        context: "Un estudio de Statista sobre el mercado global de audiolibros analizó los hábitos de lectura en personas de 18 a 64 años de varios países y reportó el porcentaje de encuestados que consumieron audiolibros en los últimos 12 meses.",
+        question: "¿Cuál es la **unidad de análisis** (o elemento individual) de este estudio?",
+        options: [
+          "Cada país que aparece en el gráfico comparativo.",
+          "Cada persona encuestada individualmente.",
+          "El valor en dólares del mercado de audiolibros.",
+          "El porcentaje promedio obtenido por China."
+        ],
+        correctIndex: 1,
+        hint: "La unidad de análisis es el objeto, persona o registro individual sobre el cual se mide la variable de interés.",
+        explanation: "La unidad de análisis o elemento es **cada persona encuestada**, ya que sobre cada individuo se evalúa si consumió o no audiolibros durante los últimos 12 meses."
+      },
+      {
+        id: "POB-05",
+        category: "poblacion",
+        categoryLabel: "👥 Población y Muestra",
+        difficulty: "Fácil",
+        context: "Un analista de Netflix examina una base de datos con 8.807 títulos (películas y series) disponibles en la plataforma para clasificar la distribución de categorías y países de origen.",
+        question: "Si el objetivo del estudio es caracterizar el catálogo completo de Netflix a la fecha, ¿qué representan los 8.807 títulos?",
+        options: [
+          "Una muestra pequeña no representativa.",
+          "La población total del catálogo registrado en esa fecha.",
+          "Una variable cualitativa discreta.",
+          "La frecuencia relativa acumulada."
+        ],
+        correctIndex: 1,
+        hint: "Si el dataset contiene la totalidad de los elementos existentes objeto de estudio, estamos ante la población total.",
+        explanation: "Dado que la base de datos contiene la totalidad de los títulos disponibles en el catálogo analizado en ese período, el conjunto de 8.807 registros constituye la **población** del catálogo."
+      },
+      {
+        id: "POB-06",
+        category: "poblacion",
+        categoryLabel: "👥 Población y Muestra",
+        difficulty: "Intermedio",
+        context: "En un Instituto Profesional se recolectaron los datos de 1.200 estudiantes de jornada diurna y vespertina para evaluar el número de asignaturas reprobadas y decidir cursos de nivelación.",
+        question: "¿Qué afirmación describe correctamente la relación entre población y muestra en este caso?",
+        options: [
+          "La muestra siempre es de mayor tamaño que la población.",
+          "Los 1.200 estudiantes analizados son una muestra si el instituto tiene una matrícula total mayor (ej. 15.000 alumnos).",
+          "La población son las asignaturas reprobadas y la muestra son las aprobadas.",
+          "No es posible definir una muestra cuando existen dos jornadas de estudio."
+        ],
+        correctIndex: 1,
+        hint: "Si se analizan 1.200 alumnos de una institución que alberga muchos más estudiantes, esos 1.200 forman una muestra.",
+        explanation: "Si la institución cuenta con una matrícula total superior, los 1.200 alumnos registrados representan una muestra representativa del total de estudiantes del instituto."
+      },
+      {
+        id: "POB-07",
+        category: "poblacion",
+        categoryLabel: "👥 Población y Muestra",
+        difficulty: "Fácil",
+        context: "El gobierno de San Francisco publicó los sueldos base de funcionarios públicos entre 2011 y 2014. Un analista extrae 5.000 registros para calcular la desviación estándar del sueldo.",
+        question: "Los 5.000 registros extraídos corresponden a:",
+        options: [
+          "La población de todos los funcionarios.",
+          "Una muestra de los funcionarios públicos.",
+          "Un parámetro poblacional fijo.",
+          "La moda salarial del año 2011."
+        ],
+        correctIndex: 1,
+        hint: "Un subconjunto extraído de la base total para fines de cálculo es una muestra.",
+        explanation: "Al extraer un subgrupo de 5.000 observaciones del total de funcionarios de la ciudad, se está trabajando con una **muestra** ($n = 5.000$)."
+      },
+      {
+        id: "POB-08",
+        category: "poblacion",
+        categoryLabel: "👥 Población y Muestra",
+        difficulty: "Avanzado",
+        context: "Una consultora vocacional analiza una base de datos con información de todas las carreras técnicas y profesionales de Chile durante los años 2024 y 2025 para asesorar a estudiantes.",
+        question: "¿Por qué es crucial definir correctamente la población antes de calcular medidas de resumen (como la media de ingresos)?",
+        options: [
+          "Porque si la población no está bien delimitada, las conclusiones e inferencias no serán válidas para el grupo de interés.",
+          "Porque Pandas solo puede ejecutar el comando `.describe()` si la población es finita.",
+          "Porque la desviación estándar es igual a cero en cualquier muestra.",
+          "Porque evita tener que clasificar las variables en cualitativas o cuantitativas."
+        ],
+        correctIndex: 0,
+        hint: "El alcance y validez de cualquier conclusión depende de a qué grupo específico representan los datos.",
+        explanation: "Definir con precisión el marco poblacional asegura que las decisiones, generalizaciones y proyecciones tengan validez estadística y no se extrapolen erróneamente a grupos no representados."
+      },
+
+      // ------------------------------------------------------------------------
+      // 2. CLASIFICACIÓN DE VARIABLES (6 Preguntas)
+      // ------------------------------------------------------------------------
+      {
+        id: "VAR-01",
+        category: "variables",
+        categoryLabel: "🏷️ Tipos de Variables",
+        difficulty: "Fácil",
+        question: "¿Cómo se clasifica la variable **'Nivel de satisfacción con la conexión a internet'**, medida en las categorías: *Muy insatisfecho, Insatisfecho, Neutral, Satisfecho, Muy satisfecho*?",
+        options: [
+          "Cualitativa Nominal",
+          "Cualitativa Ordinal",
+          "Cuantitativa Discreta",
+          "Cuantitativa Continua"
+        ],
+        correctIndex: 1,
+        hint: "Observa que las respuestas son palabras o estados (cualidad) pero tienen un ordenamiento o escala clara de menor a mayor.",
+        explanation: "Es **Cualitativa Ordinal** porque describe una cualidad no numérica pero posee un orden o jerarquía intrínseca evidente entre sus categorías."
+      },
+      {
+        id: "VAR-02",
+        category: "variables",
+        categoryLabel: "🏷️ Tipos de Variables",
+        difficulty: "Fácil",
+        question: "¿Cómo se clasifica la variable **'Tiempo de resolución de una falla técnica'** medida en minutos (ej. $17.5$ min, $39.2$ min)?",
+        options: [
+          "Cualitativa Nominal",
+          "Cualitativa Ordinal",
+          "Cuantitativa Discreta",
+          "Cuantitativa Continua"
+        ],
+        correctIndex: 3,
+        hint: "El tiempo se mide en una escala continua y admite infinitos valores decimales e intermedios.",
+        explanation: "Es **Cuantitativa Continua** porque es una magnitud numérica resultante de una medición temporal que admite números decimales o fraccionarios."
+      },
+      {
+        id: "VAR-03",
+        category: "variables",
+        categoryLabel: "🏷️ Tipos de Variables",
+        difficulty: "Fácil",
+        question: "¿Cómo se clasifica la variable **'Número de asignaturas reprobadas por un estudiante'** ($0, 1, 2, 3, \\dots$)?",
+        options: [
+          "Cualitativa Ordinal",
+          "Cuantitativa Discreta",
+          "Cuantitativa Continua",
+          "Cualitativa Nominal"
+        ],
+        correctIndex: 1,
+        hint: "Es una variable numérica que surge de un conteo exacto por unidades enteras (no puedes reprobar 1.73 asignaturas).",
+        explanation: "Es **Cuantitativa Discreta** ya que toma valores numéricos enteros no negativos producto de un conteo."
+      },
+      {
+        id: "VAR-04",
+        category: "variables",
+        categoryLabel: "🏷️ Tipos de Variables",
+        difficulty: "Intermedio",
+        question: "Si codificamos la variable **'Región de Chile'** asignando números (ej. $1$: Tarapacá, $2$: Antofagasta, $13$: Metropolitana), ¿qué tipo de variable es y qué operación está **prohibida** estadísticamente?",
+        options: [
+          "Pasa a ser Cuantitativa Continua y podemos calcular su mediana.",
+          "Pasa a ser Cuantitativa Discreta y podemos sumarlas.",
+          "Sigue siendo Cualitativa Nominal; calcular su promedio aritmético es un error grave sin sentido conceptual.",
+          "Es Cualitativa Ordinal porque el número 13 es mayor que el número 1."
+        ],
+        correctIndex: 2,
+        hint: "Asignar una etiqueta numérica a un nombre de lugar no cambia su naturaleza categórica.",
+        explanation: "Asignar un código numérico a una categoría es solo una convención de identificación. La variable sigue siendo **Cualitativa Nominal** y calcular el promedio de los números de región carece totalmente de sentido lógico y estadístico."
+      },
+      {
+        id: "VAR-05",
+        category: "variables",
+        categoryLabel: "🏷️ Tipos de Variables",
+        difficulty: "Intermedio",
+        question: "¿Cómo se clasifica la variable **'Red social preferida'** (Instagram, TikTok, X, LinkedIn, Facebook)?",
+        options: [
+          "Cualitativa Nominal",
+          "Cualitativa Ordinal",
+          "Cuantitativa Discreta",
+          "Cuantitativa Continua"
+        ],
+        correctIndex: 0,
+        hint: "¿Existe un orden matemático obligatorio entre Instagram y TikTok?",
+        explanation: "Es **Cualitativa Nominal** porque agrupa respuestas en categorías o nombres sin una jerarquía u orden numérico intrínseco."
+      },
+      {
+        id: "VAR-06",
+        category: "variables",
+        categoryLabel: "🏷️ Tipos de Variables",
+        difficulty: "Avanzado",
+        question: "En una encuesta sobre salud pública, la suma de los porcentajes de las opciones de respuesta da un total de **145%**. ¿A qué se debe esto estadísticamente?",
+        options: [
+          "A que hubo un error de redondeo en el software de cálculo.",
+          "A que la pregunta fue de alternativa múltiple (cada encuestado podía marcar más de una opción simultáneamente).",
+          "A que la muestra utilizada era demasiado pequeña.",
+          "A que la variable era cuantitativa continua."
+        ],
+        correctIndex: 1,
+        hint: "Cuando un encuestado puede seleccionar 2 o más opciones a la vez, las frecuencias relativas se calculan sobre el total de personas y la suma superará el 100%.",
+        explanation: "En preguntas con **selección múltiple**, una misma persona aporta a varias categorías a la vez, por lo que la suma de las frecuencias relativas porcentuales excede el 100%."
+      },
+
+      // ------------------------------------------------------------------------
+      // 3. PYTHON & PANDAS (6 Preguntas)
+      // ------------------------------------------------------------------------
+      {
+        id: "PY-01",
+        category: "python",
+        categoryLabel: "🐍 Python & Pandas",
+        difficulty: "Fácil",
+        question: "¿Qué atributo o método de un DataFrame de Pandas (`df`) entrega en una sola línea la cantidad total de **filas y columnas** en formato de tupla `(filas, columnas)`?",
+        options: [
+          "`df.info()`",
+          "`df.shape`",
+          "`len(df)`",
+          "`df.describe()`"
+        ],
+        correctIndex: 1,
+        hint: "Es un atributo (sin paréntesis) que describe las dimensiones del arreglo o tabla.",
+        explanation: "`df.shape` retorna una tupla con la estructura exacta `(n_filas, n_columnas)` de forma limpia e inmediata."
+      },
+      {
+        id: "PY-02",
+        category: "python",
+        categoryLabel: "🐍 Python & Pandas",
+        difficulty: "Intermedio",
+        question: "Para calcular rápidamente la frecuencia absoluta de cada categoría única de la columna `'Carrera'` en un DataFrame `df`, ¿qué función de Pandas es la indicada?",
+        options: [
+          "`df['Carrera'].count()`",
+          "`df['Carrera'].value_counts()`",
+          "`df['Carrera'].sum()`",
+          "`df['Carrera'].unique()`"
+        ],
+        correctIndex: 1,
+        hint: "Esta función cuenta cuántas veces aparece cada valor único y los ordena de mayor a menor frecuencia.",
+        explanation: "`df['Carrera'].value_counts()` genera una Serie con el conteo de repeticiones ($f_i$) de cada categoría presente en la columna."
+      },
+      {
+        id: "PY-03",
+        category: "python",
+        categoryLabel: "🐍 Python & Pandas",
+        difficulty: "Intermedio",
+        question: "Si la columna `'Cargos_mensuales'` contiene valores monetarios con decimales como `29.85` y `56.90`, ¿por qué **NO** se debe convertir a tipo de dato `int` con `.astype(int)`?",
+        options: [
+          "Porque los DataFrames de Pandas no soportan números enteros.",
+          "Porque truncaría los decimales perdiendo precisión monetaria y sesgando los promedios futuros.",
+          "Porque convertir a `int` transforma los números en cadenas de texto (`object`).",
+          "Porque generaría un error de sintaxis al tener el símbolo `$`."
+        ],
+        correctIndex: 1,
+        hint: "Al convertir de float a int, Python elimina toda la parte decimal (ej. 29.85 se convierte en 29).",
+        explanation: "La conversión a `int` trunca la fracción decimal, eliminando información financiera relevante y provocando sesgos acumulativos en sumatorias y promedios."
+      },
+      {
+        id: "PY-04",
+        category: "python",
+        categoryLabel: "🐍 Python & Pandas",
+        difficulty: "Intermedio",
+        question: "¿Qué línea de código en Pandas crea correctamente una columna calculada `'Ingreso_total'` multiplicando `'Sueldo_mensual'` por `'Meses_antigüedad'`?",
+        options: [
+          "`df['Ingreso_total'] = df['Sueldo_mensual'] * df['Meses_antigüedad']`",
+          "`df.add_column('Ingreso_total') = df['Sueldo_mensual'] * df['Meses_antigüedad']`",
+          "`df['Ingreso_total'] = sum(df['Sueldo_mensual'], df['Meses_antigüedad'])`",
+          "`df.create('Ingreso_total')`"
+        ],
+        correctIndex: 0,
+        hint: "Pandas utiliza operaciones vectorizadas directamente asignando a la nueva clave del DataFrame `df['Nueva_Columna'] = ...`.",
+        explanation: "En Pandas, las operaciones elemento a elemento entre columnas son vectorizadas y se asignan directamente con la sintaxis `df['Nueva_Columna'] = df['ColA'] * df['ColB']`."
+      },
+      {
+        id: "PY-05",
+        category: "python",
+        categoryLabel: "🐍 Python & Pandas",
+        difficulty: "Avanzado",
+        question: "¿Qué método de Pandas permite filtrar un DataFrame para conservar únicamente las filas cuyo cargo coincida con alguno de los elementos de una lista `cargos_interes`?",
+        options: [
+          "`df[df['Cargo'].isin(cargos_interes)]`",
+          "`df[df['Cargo'] == cargos_interes]`",
+          "`df.filter_by(cargos_interes)`",
+          "`df.groupby('Cargo').match(cargos_interes)`"
+        ],
+        correctIndex: 0,
+        hint: "Se utiliza una función booleana de serie cuyo nombre en inglés significa 'está en'.",
+        explanation: "`.isin(lista)` evalúa si cada valor de la columna pertenece a la lista entregada y genera la máscara booleana para filtrar el DataFrame."
+      },
+      {
+        id: "PY-06",
+        category: "python",
+        categoryLabel: "🐍 Python & Pandas",
+        difficulty: "Fácil",
+        question: "¿Qué función de Pandas entrega un resumen estadístico automático con conteo, media, desviación estándar, valor mínimo, percentiles 25, 50, 75 y valor máximo?",
+        options: [
+          "`df.info()`",
+          "`df.describe()`",
+          "`df.summary()`",
+          "`df.head()`"
+        ],
+        correctIndex: 1,
+        hint: "Es el comando estándar de análisis exploratorio para obtener las métricas de resumen.",
+        explanation: "`df.describe()` genera el resumen completo de medidas de tendencia central, posición y dispersión para las variables numéricas."
+      },
+
+      // ------------------------------------------------------------------------
+      // 4. TABLAS DE FRECUENCIA (7 Preguntas)
+      // ------------------------------------------------------------------------
+      {
+        id: "FREC-01",
+        category: "frecuencias",
+        categoryLabel: "📊 Tablas de Frecuencia",
+        difficulty: "Fácil",
+        question: "En una tabla de frecuencias de asignaturas reprobadas por estudiantes, ¿qué símbolo representa la **frecuencia relativa acumulada** de quienes reprobaron **como máximo** 2 asignaturas?",
+        options: [
+          "$f_2$",
+          "$F_2$",
+          "$h_2$",
+          "$H_2$"
+        ],
+        correctIndex: 3,
+        hint: "Las letras mayúsculas ($F, H$) indican acumuladas. La $H$ representa la relativa (proporción o porcentaje).",
+        explanation: "$H_2$ denota la frecuencia relativa acumulada hasta la categoría 2, representando la proporción o porcentaje acumulado de individuos con 2 o menos asignaturas reprobadas."
+      },
+      {
+        id: "FREC-02",
+        category: "frecuencias",
+        categoryLabel: "📊 Tablas de Frecuencia",
+        difficulty: "Intermedio",
+        question: "En un estudio con $n = 250$ llamadas telefónicas, se tiene que la frecuencia absoluta del intervalo de llamadas largas es $f_6 = 40$. ¿Cuál es el valor de la frecuencia relativa $h_6$ expresado en porcentaje?",
+        options: [
+          "$16.0\\%$",
+          "$40.0\\%$",
+          "$6.25\\%$",
+          "$25.0\\%$"
+        ],
+        correctIndex: 0,
+        hint: "Calcula $h_6 = \\frac{f_6}{n} \\times 100\\% = \\frac{40}{250} \\times 100\\%$.",
+        explanation: "$h_6 = \\frac{40}{250} = 0.16$, lo que equivale al $16.0\\%$ del total de llamadas analizadas."
+      },
+      {
+        id: "FREC-03",
+        category: "frecuencias",
+        categoryLabel: "📊 Tablas de Frecuencia",
+        difficulty: "Intermedio",
+        question: "Dadas las frecuencias absolutas $f_0 = 120$, $f_1 = 50$, $f_2 = 30$, $f_3 = 15$. ¿Cuál es la interpretación rigurosa y correcta del valor acumulado $F_2 = 200$?",
+        options: [
+          "Exactamente 200 estudiantes reprobaron 2 asignaturas.",
+          "Un total de 200 estudiantes reprobaron 2 o más asignaturas.",
+          "Un total de 200 estudiantes reprobaron como máximo (a lo sumo) 2 asignaturas.",
+          "El 200% de los estudiantes aprobó el curso."
+        ],
+        correctIndex: 2,
+        hint: "$F_2 = f_0 + f_1 + f_2 = 120 + 50 + 30 = 200$. Acumula desde el menor valor hasta el 2 inclusive.",
+        explanation: "Al ser una frecuencia absoluta acumulada ($F_2 = 200$), indica que 200 personas en la muestra presentan entre 0 y 2 asignaturas reprobadas (es decir, **a lo sumo / como máximo 2**)."
+      },
+      {
+        id: "FREC-04",
+        category: "frecuencias",
+        categoryLabel: "📊 Tablas de Frecuencia",
+        difficulty: "Fácil",
+        question: "¿Por qué **NO** es estadísticamente válido calcular ni interpretar frecuencias acumuladas ($F_i$ o $H_i$) para una variable cualitativa nominal como el *'Tipo de contenido'* (Película vs. Serie)?",
+        options: [
+          "Porque las variables nominales no admiten cálculos matemáticos en la computadora.",
+          "Porque al no existir un orden jerárquico natural entre las categorías, acumularlas es arbitrario y carece de sentido lógico.",
+          "Porque la suma de frecuencias relativas siempre daría mayor a 1.",
+          "Porque solo se pueden acumular variables que tengan más de 100 categorías."
+        ],
+        correctIndex: 1,
+        hint: "Para decir 'menor o igual a una categoría' se requiere obligatoriamente que exista un orden jerárquico.",
+        explanation: "La acumulación ($F_i, H_i$) exige una noción de orden (de menor a mayor). Al carecer de orden las variables nominales, decir que se 'acumula hasta película' no tiene ningún significado estadístico."
+      },
+      {
+        id: "FREC-05",
+        category: "frecuencias",
+        categoryLabel: "📊 Tablas de Frecuencia",
+        difficulty: "Intermedio",
+        question: "En el Informe Mundial de la Felicidad de la ONU, ¿por qué se utiliza el **Logaritmo del PIB per cápita** en lugar del PIB per cápita bruto?",
+        options: [
+          "Para convertir una variable cuantitativa en cualitativa nominal.",
+          "Para reducir la severa asimetría positiva de los datos económicos y facilitar comparaciones lineales entre países con enormes brechas de riqueza.",
+          "Para eliminar los países con PIB negativo del estudio.",
+          "Porque el logaritmo transforma todas las frecuencias relativas en 100%."
+        ],
+        correctIndex: 1,
+        hint: "La distribución de riqueza tiene una cola muy larga a la derecha (asimetría). El logaritmo comprime las escalas grandes.",
+        explanation: "Las variables financieras y de riqueza suelen ser sumamente asimétricas con sesgo a la derecha. La transformación logarítmica suaviza las diferencias extremas (outliers) y hace la distribución más simétrica y comparable."
+      },
+      {
+        id: "FREC-06",
+        category: "frecuencias",
+        categoryLabel: "📊 Tablas de Frecuencia",
+        difficulty: "Avanzado",
+        question: "En una tabla de frecuencias agrupadas con intervalos $(L_{inf}, L_{sup}]$, si un intervalo de puntaje SIMCE es $(250, 275]$, ¿qué ocurre con un estudiante que obtuvo exactamente $250$ puntos?",
+        options: [
+          "Queda incluido en este intervalo porque el 250 está a la izquierda.",
+          "Queda incluido en el intervalo inmediatamente anterior porque el paréntesis redondo $($ indica que el 250 es un límite abierto (no incluido).",
+          "Se descarta de la muestra por ser un valor de borde.",
+          "Se suma en ambos intervalos para mantener la continuidad."
+        ],
+        correctIndex: 1,
+        hint: "La notación $(a, b]$ indica intervalo abierto por la izquierda (no incluye $a$) y cerrado por la derecha (incluye $b$).",
+        explanation: "En la notación estándar $(L_{inf}, L_{sup}]$, el extremo izquierdo es abierto $($ y por lo tanto el valor exacto 250 perteneció al intervalo anterior."
+      },
+      {
+        id: "FREC-07",
+        category: "frecuencias",
+        categoryLabel: "📊 Tablas de Frecuencia",
+        difficulty: "Fácil",
+        question: "¿Cuál es la propiedad fundamental que debe cumplir la suma de todas las frecuencias relativas $h_i$ de una distribución?",
+        options: [
+          "Debe ser igual al tamaño de la muestra $n$.",
+          "Debe ser exactamente igual a $1.0$ (o $100\\%$ al expresarse en porcentaje).",
+          "Debe ser igual a la media de la muestra.",
+          "Debe ser siempre mayor que la suma de $f_i$."
+        ],
+        correctIndex: 1,
+        hint: "La suma de todas las proporciones de un todo siempre equivale a la unidad.",
+        explanation: "Por definición de probabilidad y proporciones estadísticas, la sumatoria $\\sum_{i=1}^k h_i = 1.0$, lo que corresponde al $100\\%$ del total de observaciones."
+      },
+
+      // ------------------------------------------------------------------------
+      // 5. REPRESENTACIÓN GRÁFICA (5 Preguntas)
+      // ------------------------------------------------------------------------
+      {
+        id: "GRAF-01",
+        category: "graficos",
+        categoryLabel: "📈 Gráficos Estadísticos",
+        difficulty: "Fácil",
+        question: "¿Qué tipo de gráfico es el único estadísticamente adecuado para representar la distribución de una variable **cuantitativa continua** como la *Edad* o el *Sueldo base* agrupada en 10 intervalos de clase?",
+        options: [
+          "Gráfico Circular (Torta)",
+          "Gráfico de Barras separadas",
+          "Histograma",
+          "Diagrama de Venn"
+        ],
+        correctIndex: 2,
+        hint: "Es el gráfico donde las barras van completamente unidas (sin separación) para reflejar la continuidad numérica.",
+        explanation: "El **Histograma** es la representación por excelencia para variables cuantitativas continuas agrupadas en intervalos continuos."
+      },
+      {
+        id: "GRAF-02",
+        category: "graficos",
+        categoryLabel: "📈 Gráficos Estadísticos",
+        difficulty: "Intermedio",
+        question: "¿Cuál es la razón técnica fundamental por la cual las barras de un **Histograma** se construyen adosadas (juntas, sin espacio entre sí), a diferencia de un gráfico de barras tradicional?",
+        options: [
+          "Para que el informe ocupe menos espacio visual.",
+          "Porque el eje horizontal representa una escala numérica continua donde el límite superior de un intervalo es inmediatamente el límite inferior del siguiente.",
+          "Porque solo se utiliza cuando la muestra tiene más de 1.000 observaciones.",
+          "Porque indica que no hubo errores en la recolección de datos."
+        ],
+        correctIndex: 1,
+        hint: "La ausencia de espacio físico entre barras simboliza que no existen interrupciones en la escala numérica continua.",
+        explanation: "La contigüidad de las barras en el histograma representa la continuidad física del recorrido de la variable cuantitativa continua, a diferencia de las categorías cualitativas que son discretas e independientes."
+      },
+      {
+        id: "GRAF-03",
+        category: "graficos",
+        categoryLabel: "📈 Gráficos Estadísticos",
+        difficulty: "Intermedio",
+        question: "Al construir el histograma de edad para 100.000 profesionales TI, la barra más alta se ubica entre 24 y 28 años, y las barras van decreciendo progresivamente hasta los 60 años formando una cola larga hacia la derecha. ¿Qué forma tiene esta distribución?",
+        options: [
+          "Distribución simétrica perfecta.",
+          "Distribución con asimetría positiva (sesgada a la derecha).",
+          "Distribución uniforme sin clase modal.",
+          "Distribución con asimetría negativa (sesgada a la izquierda)."
+        ],
+        correctIndex: 1,
+        hint: "Cuando la mayor concentración está en los valores bajos y la cola larga se extiende hacia la derecha (valores altos), la asimetría es positiva.",
+        explanation: "Una distribución con acumulación en los valores iniciales/jóvenes y una cola que se extiende hacia los valores mayores a la derecha presenta **asimetría positiva** o sesgo a la derecha."
+      },
+      {
+        id: "GRAF-04",
+        category: "graficos",
+        categoryLabel: "📈 Gráficos Estadísticos",
+        difficulty: "Fácil",
+        question: "Si deseas graficar la variable *'Lenguaje de programación más utilizado'* entre 8 opciones distintas en una empresa de tecnología, ¿qué gráfico se recomienda?",
+        options: [
+          "Histograma continuo",
+          "Gráfico de Barras (horizontal o vertical)",
+          "Polígono de frecuencias acumuladas",
+          "Gráfico de dispersión 3D"
+        ],
+        correctIndex: 1,
+        hint: "Es una variable cualitativa nominal con más de 5 categorías.",
+        explanation: "Para una variable cualitativa nominal con varias categorías ($>5$), el **gráfico de barras** (especialmente horizontal para facilitar la lectura de nombres) es el más limpio y adecuado."
+      },
+      {
+        id: "GRAF-05",
+        category: "graficos",
+        categoryLabel: "📈 Gráficos Estadísticos",
+        difficulty: "Intermedio",
+        question: "¿Por qué el **gráfico circular (de torta)** se desaconseja totalmente cuando una variable cualitativa posee más de 6 o 7 categorías distintas?",
+        options: [
+          "Porque los ángulos dejan de sumar 360 grados.",
+          "Porque los sectores se vuelven muy angostos y se dificulta enormemente la comparación visual y lectura de porcentajes.",
+          "Porque el gráfico circular solo funciona para variables continuas.",
+          "Porque la librería Matplotlib no permite más de 4 sectores."
+        ],
+        correctIndex: 1,
+        hint: "El ojo humano tiene dificultades para comparar áreas y ángulos de muchos sectores pequeños.",
+        explanation: "Con muchas categorías, los sectores circulares se fragmentan en porciones muy pequeñas e ilegibles, perdiendo efectividad visual. En esos casos es preferible un gráfico de barras."
+      },
+
+      // ------------------------------------------------------------------------
+      // 6. TENDENCIA CENTRAL Y PERCENTILES (5 Preguntas)
+      // ------------------------------------------------------------------------
+      {
+        id: "TC-01",
+        category: "tendencia",
+        categoryLabel: "⚖️ Tendencia Central & Percentiles",
+        difficulty: "Intermedio",
+        question: "Al analizar los sueldos al 4° año de egresados de un área universitaria, se obtiene que la media es \\$1.950.000 y la mediana es \\$1.200.000 ($\\bar{x} > Me$). ¿Qué explica esta diferencia y qué medida describe mejor al egresado típico?",
+        options: [
+          "Los datos son simétricos; la media es la medida más representativa.",
+          "Existe asimetría positiva provocada por un grupo minoritario de egresados con sueldos extremadamente altos; la mediana es más representativa.",
+          "Existe asimetría negativa por sueldos muy bajos; la moda es la mejor medida.",
+          "Hubo un error de cálculo en Python."
+        ],
+        correctIndex: 1,
+        hint: "La media aritmética se deja arrastrar fácilmente por valores extremadamente altos (outliers), mientras que la mediana no.",
+        explanation: "Cuando $\\bar{x} > Me$, la distribución presenta **asimetría positiva** debido a unos pocos sueldos muy altos que inflan el promedio. La **mediana** es robusta y describe con mayor fidelidad la realidad del 50% central de los profesionales."
+      },
+      {
+        id: "TC-02",
+        category: "tendencia",
+        categoryLabel: "⚖️ Tendencia Central & Percentiles",
+        difficulty: "Intermedio",
+        question: "Una facultad decide enviar a clases de reforzamiento al **25% de los estudiantes con las notas más bajas** en Álgebra. Tras calcular las medidas, se obtiene que $P_{25} = 3.4$. ¿Cuál es la interpretación correcta?",
+        options: [
+          "Todos los alumnos de reforzamiento obtuvieron exactamente 3.4.",
+          "El 25% de los alumnos obtuvo una nota de 3.4 o inferior, siendo 3.4 la nota máxima dentro del grupo enviado a reforzamiento.",
+          "La nota promedio del curso completo fue de 3.4.",
+          "3.4 alumnos reprobaron la asignatura."
+        ],
+        correctIndex: 1,
+        hint: "El percentil 25 ($P_{25} = Q_1$) acumula el 25% inferior de las observaciones.",
+        explanation: "$P_{25} = 3.4$ indica que el 25% de los estudiantes con peor rendimiento obtuvo calificaciones $\\le 3.4$. Por lo tanto, 3.4 es la nota límite superior para ingresar al reforzamiento."
+      },
+      {
+        id: "TC-03",
+        category: "tendencia",
+        categoryLabel: "⚖️ Tendencia Central & Percentiles",
+        difficulty: "Fácil",
+        question: "¿Cuál es la **ÚNICA** medida de tendencia central aplicable a variables cualitativas nominales (como 'Comuna de residencia' o 'Carrera')?",
+        options: [
+          "La Media Aritmética",
+          "La Mediana",
+          "La Moda",
+          "El Percentil 50"
+        ],
+        correctIndex: 2,
+        hint: "Solo podemos identificar cuál es la categoría que más se repite (mayor frecuencia absoluta).",
+        explanation: "Para variables nominales no se pueden realizar sumas ni ordenamientos jerárquicos. La **Moda** (la categoría con mayor frecuencia absoluta) es la única medida de tendencia central válida."
+      },
+      {
+        id: "TC-04",
+        category: "tendencia",
+        categoryLabel: "⚖️ Tendencia Central & Percentiles",
+        difficulty: "Intermedio",
+        question: "Se tienen los años de antigüedad de 6 trabajadores: $2, 3, 4, 5, 8, 10$ (muestra de tamaño par, $n=6$). ¿Cuál es el valor exacto de la **Mediana**?",
+        options: [
+          "$4.0$ años",
+          "$4.5$ años",
+          "$5.0$ años",
+          "$5.33$ años"
+        ],
+        correctIndex: 1,
+        hint: "Cuando $n$ es par, la mediana es el promedio aritmético de las dos observaciones centrales (posiciones $n/2$ y $n/2 + 1$).",
+        explanation: "Las posiciones centrales 3 y 4 corresponden a los valores 4 y 5. La mediana es $Me = \\frac{4 + 5}{2} = 4.5$ años."
+      },
+      {
+        id: "TC-05",
+        category: "tendencia",
+        categoryLabel: "⚖️ Tendencia Central & Percentiles",
+        difficulty: "Fácil",
+        question: "¿Cuál es la relación de equivalencia exacta entre el **Segundo Cuartil ($Q_2$)**, los Percentiles y la Mediana?",
+        options: [
+          "$Q_2 = P_{25} = \\text{Media}$",
+          "$Q_2 = P_{50} = \\text{Mediana}$",
+          "$Q_2 = P_{75} = \\text{Moda}$",
+          "$Q_2 = \\text{Desviación Estándar}$"
+        ],
+        correctIndex: 1,
+        hint: "El segundo cuartil divide la distribución al 50%.",
+        explanation: "Por definición, el segundo cuartil ($Q_2$), el percentil 50 ($P_{50}$) y la mediana ($Me$) corresponden exactamente al mismo valor estadístico (el punto del 50%)."
+      },
+
+      // ------------------------------------------------------------------------
+      // 7. DISPERSIÓN Y HOMOGENEIDAD (5 Preguntas)
+      // ------------------------------------------------------------------------
+      {
+        id: "DISP-01",
+        category: "dispersion",
+        categoryLabel: "📉 Dispersión & Homogeneidad",
+        difficulty: "Fácil",
+        question: "¿En qué unidad de medida se expresa el **Coeficiente de Variación ($CV$)**?",
+        options: [
+          "En las mismas unidades de la variable original (ej. pesos, dólares o años).",
+          "En unidades elevadas al cuadrado.",
+          "Es una medida adimensional expresada en porcentaje (%).",
+          "En la misma unidad que la varianza."
+        ],
+        correctIndex: 2,
+        hint: "$CV = \\left(\\frac{s}{\\bar{x}}\\right) \\times 100\\%$. Las unidades de $s$ y $\\bar{x}$ se cancelan.",
+        explanation: "Al dividir la desviación estándar entre la media, las unidades de medida se simplifican, resultando en un porcentaje adimensional que permite comparar la variabilidad relativa entre variables distintas."
+      },
+      {
+        id: "DISP-02",
+        category: "dispersion",
+        categoryLabel: "📉 Dispersión & Homogeneidad",
+        difficulty: "Intermedio",
+        question: "Un analista desea comparar la variabilidad de sueldos entre 2011 ($\\bar{x} = 63.595$ USD, $s = 40.556$ USD) y 2014 ($\\bar{x} = 66.564$ USD, $s = 44.053$ USD). ¿Qué medida debe utilizar para determinar con precisión cuál año tuvo mayor **heterogeneidad relativa**?",
+        options: [
+          "El Rango",
+          "La Desviación Estándar ($s$)",
+          "El Coeficiente de Variación ($CV$)",
+          "El Rango Intercuartílico"
+        ],
+        correctIndex: 2,
+        hint: "Como los promedios de los dos años son distintos, la desviación estándar no es comparable directamente.",
+        explanation: "El **Coeficiente de Variación ($CV$)** estandariza la dispersión respecto a la magnitud de la media de cada año, permitiendo evaluar la verdadera heterogeneidad relativa sin distorsión por escala."
+      },
+      {
+        id: "DISP-03",
+        category: "dispersion",
+        categoryLabel: "📉 Dispersión & Homogeneidad",
+        difficulty: "Intermedio",
+        question: "Al calcular el Coeficiente de Variación en sueldos de funcionarios, el cargo de *Enfermero/a* obtiene un $CV = 14.8\\%$, mientras que *Asesor Legal* obtiene un $CV = 46.2\\%$. Según el criterio estándar del $30\\%$, ¿qué se concluye?",
+        options: [
+          "Los sueldos de los asesores legales son más homogéneos.",
+          "Los sueldos de los enfermeros son homogéneos ($CV \\le 30\\%$) y su promedio es altamente representativo; los de los asesores son heterogéneos.",
+          "La desviación estándar de los enfermeros es mayor que la de los asesores.",
+          "Todos los enfermeros ganan exactamente lo mismo."
+        ],
+        correctIndex: 1,
+        hint: "Si $CV \\le 30\\%$, el grupo es homogéneo y la media describe muy bien al conjunto.",
+        explanation: "Un $CV = 14.8\\% \\le 30\\%$ clasifica al grupo como **homogéneo** (baja dispersión relativa), lo que garantiza que la media aritmética es un estadístico muy representativo de sus salarios."
+      },
+      {
+        id: "DISP-04",
+        category: "dispersion",
+        categoryLabel: "📉 Dispersión & Homogeneidad",
+        difficulty: "Fácil",
+        question: "Si la Desviación Estándar de una muestra de notas es igual a cero ($s = 0$), ¿qué significa estadísticamente?",
+        options: [
+          "Que todos los estudiantes reprobaron la asignatura con nota 1.0.",
+          "Que no existe variabilidad alguna y todos los estudiantes de la muestra obtuvieron exactamente la misma calificación individual.",
+          "Que hubo un error en la fórmula de la varianza.",
+          "Que el 50% de las notas es negativo."
+        ],
+        correctIndex: 1,
+        hint: "Si la distancia entre cada dato y la media es cero, todas las observaciones son idénticas.",
+        explanation: "$s = 0$ ocurre única y exclusivamente cuando no hay ninguna dispersión y todas las observaciones del conjunto tienen exactamente el mismo valor."
+      },
+      {
+        id: "DISP-05",
+        category: "dispersion",
+        categoryLabel: "📉 Dispersión & Homogeneidad",
+        difficulty: "Avanzado",
+        question: "¿Por qué el **Rango ($R = X_{max} - X_{min}$)** es considerado una medida de dispersión muy limitada para la toma de decisiones empresariales?",
+        options: [
+          "Porque solo utiliza los dos valores más extremos de la muestra, ignorando por completo cómo se distribuyen y concentran todos los datos intermedios.",
+          "Porque el rango solo se puede calcular en variables cualitativas.",
+          "Porque su valor siempre da un número negativo.",
+          "Porque en Python no existe función para restar el mínimo del máximo."
+        ],
+        correctIndex: 0,
+        hint: "Un solo valor atípico (outlier) gigantesco infla el rango por completo sin decir nada del resto del grupo.",
+        explanation: "El rango depende exclusivamente de los valores máximo y mínimo. Si existe un valor atípico o error de registro, el rango se distorsiona totalmente sin entregar información sobre la variabilidad del grueso de la población."
+      }
+    ];
+
+    /* ============================================================
+       APP STATE & CONTROLLER
+       ============================================================ */
+    const AppState = {
+      currentCategory: 'all',
+      filteredQuestions: [],
+      currentIndex: 0,
+      streak: 0,
+      maxStreak: 0,
+      userAnswers: {}, // questionId -> { selectedIndex, isCorrect }
+      discardedOptions: {}, // questionId -> Set<number>
+      isShuffled: false,
+      theme: 'light'
+    };
+
+    // DOM Elements
+    const elCategoryList = document.getElementById('categoryList');
+    const elQuestionCounter = document.getElementById('questionCounter');
+    const elProgressPercent = document.getElementById('progressPercent');
+    const elProgressFill = document.getElementById('progressFill');
+    const elCurrentStreak = document.getElementById('currentStreak');
+    const elStreakBadge = document.getElementById('streakBadge');
+
+    const elStatScore = document.getElementById('statScore');
+    const elStatAccuracy = document.getElementById('statAccuracy');
+    const elStatStreak = document.getElementById('statStreak');
+    const elStatAnswered = document.getElementById('statAnswered');
+
+    const elQuestionCard = document.getElementById('questionCard');
+    const elTagCategory = document.getElementById('tagCategory');
+    const elTagDifficulty = document.getElementById('tagDifficulty');
+    const elQuestionIdBadge = document.getElementById('questionIdBadge');
+    const elContextBox = document.getElementById('contextBox');
+    const elContextContent = document.getElementById('contextContent');
+    const elQuestionText = document.getElementById('questionText');
+    const elCodeSnippet = document.getElementById('codeSnippet');
+    const elOptionsGrid = document.getElementById('optionsGrid');
+    const elHintBox = document.getElementById('hintBox');
+    const elHintText = document.getElementById('hintText');
+    const elFeedbackBox = document.getElementById('feedbackBox');
+    const elFeedbackHeader = document.getElementById('feedbackHeader');
+    const elFeedbackExplanation = document.getElementById('feedbackExplanation');
+
+    const elBtnShowHint = document.getElementById('btnShowHint');
+    const elBtnNext = document.getElementById('btnNext');
+    const elBtnPrev = document.getElementById('btnPrev');
+
+    const elResultsScreen = document.getElementById('resultsScreen');
+    const elResultsTitle = document.getElementById('resultsTitle');
+    const elResultsSubtitle = document.getElementById('resultsSubtitle');
+    const elResultsTrophy = document.getElementById('resultsTrophy');
+    const elFinalScore = document.getElementById('finalScore');
+    const elFinalTotal = document.getElementById('finalTotal');
+    const elResultsBreakdown = document.getElementById('resultsBreakdown');
+    const elBtnRestart = document.getElementById('btnRestart');
+    const elBtnRetryWrong = document.getElementById('btnRetryWrong');
+
+    // Modals and Header buttons
+    const elBtnOpenTheory = document.getElementById('btnOpenTheory');
+    const elTheoryModal = document.getElementById('theoryModal');
+    const elBtnCloseTheory = document.getElementById('btnCloseTheory');
+    const elBtnToggleShuffle = document.getElementById('btnToggleShuffle');
+    const elShuffleIcon = document.getElementById('shuffleIcon');
+    const elShuffleText = document.getElementById('shuffleText');
+    const elBtnThemeToggle = document.getElementById('btnThemeToggle');
+    const elThemeIcon = document.getElementById('themeIcon');
+
+    /* ============================================================
+       INITIALIZATION & FILTERING
+       ============================================================ */
+    function initApp() {
+      // Load saved theme
+      const savedTheme = localStorage.getItem('stat_quiz_theme') || 'light';
+      setTheme(savedTheme);
+
+      // Event Listeners for Filters
+      elCategoryList.addEventListener('click', (e) => {
+        const btn = e.target.closest('.cat-btn');
+        if (!btn) return;
+        
+        const cat = btn.getAttribute('data-cat');
+        setCategory(cat);
+      });
+
+      // Theory Modal Events
+      elBtnOpenTheory.addEventListener('click', () => {
+        elTheoryModal.classList.add('open');
+        renderMath();
+      });
+      elBtnCloseTheory.addEventListener('click', () => elTheoryModal.classList.remove('open'));
+      elTheoryModal.addEventListener('click', (e) => {
+        if (e.target === elTheoryModal) elTheoryModal.classList.remove('open');
+      });
+
+      // Shuffle Toggle
+      elBtnToggleShuffle.addEventListener('click', toggleShuffle);
+
+      // Theme Toggle
+      elBtnThemeToggle.addEventListener('click', () => {
+        const nextTheme = AppState.theme === 'light' ? 'dark' : 'light';
+        setTheme(nextTheme);
+      });
+
+      // Quiz Actions
+      elBtnShowHint.addEventListener('click', toggleHint);
+      elBtnNext.addEventListener('click', handleNextQuestion);
+      elBtnPrev.addEventListener('click', handlePrevQuestion);
+      elBtnRestart.addEventListener('click', () => resetQuiz(false));
+      elBtnRetryWrong.addEventListener('click', () => resetQuiz(true));
+
+      const elBtnResetProgress = document.getElementById('btnResetProgress');
+      if (elBtnResetProgress) {
+        elBtnResetProgress.addEventListener('click', () => {
+          const isAll = AppState.currentCategory === 'all';
+          const msg = isAll
+            ? '¿Deseas reiniciar todas las respuestas y puntuaciones guardadas?'
+            : '¿Deseas reiniciar las respuestas y puntuación de este módulo?';
+
+          if (confirm(msg)) {
+            if (isAll) {
+              AppState.userAnswers = {};
+              AppState.discardedOptions = {};
+              AppState.maxStreak = 0;
+            } else {
+              AppState.filteredQuestions.forEach(q => {
+                delete AppState.userAnswers[q.id];
+                delete AppState.discardedOptions[q.id];
+              });
+            }
+            AppState.streak = 0;
+            AppState.currentIndex = 0;
+            saveProgress();
+            filterQuestions(false);
+            renderQuestion();
+          }
+        });
+      }
+
+      // Restore saved state
+      loadProgress();
+      filterQuestions(true);
+      updateCategoryBadges();
+      renderQuestion();
+    }
+
+    /* ============================================================
+       STATE PERSISTENCE (LocalStorage)
+       ============================================================ */
+    function saveProgress() {
+      try {
+        const serializableDiscarded = {};
+        Object.entries(AppState.discardedOptions).forEach(([qId, setObj]) => {
+          if (setObj && setObj.size > 0) {
+            serializableDiscarded[qId] = Array.from(setObj);
+          }
+        });
+
+        const payload = {
+          currentCategory: AppState.currentCategory,
+          maxStreak: AppState.maxStreak,
+          userAnswers: AppState.userAnswers,
+          discardedOptions: serializableDiscarded,
+          isShuffled: AppState.isShuffled
+        };
+        localStorage.setItem('stat_quiz_progress_exp1_v3', JSON.stringify(payload));
+      } catch (err) {
+        console.warn('Could not save progress to localStorage', err);
+      }
+    }
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem('stat_quiz_progress_exp1_v3');
+        if (!saved) return false;
+        const data = JSON.parse(saved);
+        if (!data || typeof data !== 'object') return false;
+
+        if (data.currentCategory) {
+          AppState.currentCategory = data.currentCategory;
+        }
+        AppState.maxStreak = data.maxStreak || 0;
+        AppState.userAnswers = data.userAnswers || {};
+        AppState.isShuffled = !!data.isShuffled;
+
+        if (data.discardedOptions && typeof data.discardedOptions === 'object') {
+          AppState.discardedOptions = {};
+          Object.entries(data.discardedOptions).forEach(([qId, indices]) => {
+            AppState.discardedOptions[qId] = new Set(indices);
+          });
+        }
+
+        // Update shuffle UI
+        if (AppState.isShuffled) {
+          elShuffleText.textContent = "Aleatorio: ON";
+          elBtnToggleShuffle.style.background = "rgba(79, 70, 229, 0.4)";
+        } else {
+          elShuffleText.textContent = "Aleatorio: OFF";
+          elBtnToggleShuffle.style.background = "";
+        }
+
+        return true;
+      } catch (err) {
+        console.warn('Could not parse saved progress', err);
+        return false;
+      }
+    }
+
+    function updateCategoryBadges() {
+      const cats = ['all', 'poblacion', 'variables', 'python', 'frecuencias', 'graficos', 'tendencia', 'dispersion'];
+      cats.forEach(cat => {
+        const badge = document.getElementById(`badge-${cat}`);
+        if (!badge) return;
+
+        let pool = (cat === 'all') ? QUESTION_BANK : QUESTION_BANK.filter(q => q.category === cat);
+        const total = pool.length;
+        const answered = pool.filter(q => AppState.userAnswers[q.id]).length;
+
+        if (answered === 0) {
+          badge.textContent = total;
+          badge.style.background = '';
+          badge.style.color = '';
+        } else if (answered === total) {
+          badge.textContent = `✓ ${total}`;
+          badge.style.background = 'var(--success)';
+          badge.style.color = '#ffffff';
+        } else {
+          badge.textContent = `${answered}/${total}`;
+          badge.style.background = 'var(--primary-light)';
+          badge.style.color = 'var(--primary)';
+        }
+      });
+    }
+
+    function setTheme(theme) {
+      AppState.theme = theme;
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        elThemeIcon.textContent = '☀️';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        elThemeIcon.textContent = '🌙';
+      }
+      localStorage.setItem('stat_quiz_theme', theme);
+    }
+
+    function toggleShuffle() {
+      AppState.isShuffled = !AppState.isShuffled;
+      if (AppState.isShuffled) {
+        elShuffleText.textContent = "Aleatorio: ON";
+        elBtnToggleShuffle.style.background = "rgba(79, 70, 229, 0.4)";
+      } else {
+        elShuffleText.textContent = "Aleatorio: OFF";
+        elBtnToggleShuffle.style.background = "";
+      }
+      saveProgress();
+      filterQuestions(true);
+      renderQuestion();
+    }
+
+    function filterQuestions(findFirstUnanswered = false) {
+      let pool = [];
+      if (AppState.currentCategory === 'all') {
+        pool = [...QUESTION_BANK];
+      } else {
+        pool = QUESTION_BANK.filter(q => q.category === AppState.currentCategory);
+      }
+
+      if (AppState.isShuffled) {
+        pool.sort(() => Math.random() - 0.5);
+      }
+
+      AppState.filteredQuestions = pool;
+
+      // Update active category button visually
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.getAttribute('data-cat') === AppState.currentCategory) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      if (findFirstUnanswered && pool.length > 0) {
+        const firstUnansweredIndex = pool.findIndex(q => !AppState.userAnswers[q.id]);
+        AppState.currentIndex = firstUnansweredIndex !== -1 ? firstUnansweredIndex : 0;
+      } else {
+        if (AppState.currentIndex >= pool.length) {
+          AppState.currentIndex = 0;
+        }
+      }
+    }
+
+    function setCategory(cat) {
+      AppState.currentCategory = cat;
+      saveProgress();
+
+      filterQuestions(true);
+      renderQuestion();
+    }
+
+    function resetQuiz(onlyWrong) {
+      if (onlyWrong) {
+        const wrongQuestions = AppState.filteredQuestions.filter(q => {
+          const ans = AppState.userAnswers[q.id];
+          return ans && !ans.isCorrect;
+        });
+
+        if (wrongQuestions.length > 0) {
+          AppState.filteredQuestions = wrongQuestions;
+          AppState.currentIndex = 0;
+          wrongQuestions.forEach(q => {
+            delete AppState.userAnswers[q.id];
+            delete AppState.discardedOptions[q.id];
+          });
+        }
+      } else {
+        // Reset current category
+        AppState.filteredQuestions.forEach(q => {
+          delete AppState.userAnswers[q.id];
+          delete AppState.discardedOptions[q.id];
+        });
+        AppState.currentIndex = 0;
+        filterQuestions(false);
+      }
+
+      AppState.streak = 0;
+      elResultsScreen.classList.remove('visible');
+      elQuestionCard.style.display = 'block';
+      document.getElementById('hudBar').style.display = 'flex';
+
+      saveProgress();
+      renderQuestion();
+    }
+
+    /* ============================================================
+       MARKDOWN FORMATTER HELPER
+       ============================================================ */
+    function formatMarkdown(text) {
+      if (!text) return '';
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code style="background:var(--slate-100);padding:0.15rem 0.4rem;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:0.88em;color:var(--primary);">$1</code>');
+    }
+
+    /* ============================================================
+       RENDER QUESTION
+       ============================================================ */
+    function renderQuestion() {
+      const total = AppState.filteredQuestions.length;
+      if (total === 0) return;
+
+      elResultsScreen.classList.remove('visible');
+      elQuestionCard.style.display = 'block';
+      document.getElementById('hudBar').style.display = 'flex';
+
+      const q = AppState.filteredQuestions[AppState.currentIndex];
+
+      // Meta tags
+      elTagCategory.textContent = q.categoryLabel;
+      elTagDifficulty.textContent = q.difficulty;
+      elTagDifficulty.className = `difficulty-tag ${q.difficulty === 'Fácil' ? 'diff-easy' : q.difficulty === 'Intermedio' ? 'diff-medium' : 'diff-hard'}`;
+      elQuestionIdBadge.textContent = `#${q.id}`;
+
+      // Context box
+      if (q.context) {
+        elContextContent.innerHTML = formatMarkdown(q.context);
+        elContextBox.style.display = 'block';
+      } else {
+        elContextBox.style.display = 'none';
+      }
+
+      // Question prompt
+      elQuestionText.innerHTML = formatMarkdown(q.question);
+
+      // Optional Code
+      if (q.code) {
+        elCodeSnippet.innerHTML = q.code;
+        elCodeSnippet.style.display = 'block';
+      } else {
+        elCodeSnippet.style.display = 'none';
+      }
+
+      // Options
+      elOptionsGrid.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+      const alreadyAnswered = AppState.userAnswers[q.id];
+      const isDiscardedSet = AppState.discardedOptions[q.id] || new Set();
+
+      q.options.forEach((optText, idx) => {
+        const row = document.createElement('div');
+        row.className = 'option-row';
+        if (!alreadyAnswered && isDiscardedSet.has(idx)) {
+          row.classList.add('discarded');
+        }
+
+        row.innerHTML = `
+          <button type="button" class="option-btn" aria-label="Seleccionar alternativa ${letters[idx]}">
+            <div class="option-letter">${letters[idx]}</div>
+            <div class="option-content">${formatMarkdown(optText)}</div>
+          </button>
+          <button type="button" class="btn-discard-outside" title="Descartar / Habilitar alternativa (${letters[idx]})" aria-label="Descartar alternativa ${letters[idx]}">✕</button>
+        `;
+
+        const optBtn = row.querySelector('.option-btn');
+        const discardBtn = row.querySelector('.btn-discard-outside');
+
+        if (alreadyAnswered) {
+          optBtn.disabled = true;
+          discardBtn.disabled = true;
+          discardBtn.style.opacity = '0.3';
+          if (idx === q.correctIndex) {
+            optBtn.classList.add('correct');
+            row.classList.remove('discarded');
+          } else if (idx === alreadyAnswered.selectedIndex) {
+            optBtn.classList.add('incorrect');
+          }
+        } else {
+          // Clic en la equis externa para descartar / re-habilitar
+          discardBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!AppState.discardedOptions[q.id]) {
+              AppState.discardedOptions[q.id] = new Set();
+            }
+            if (AppState.discardedOptions[q.id].has(idx)) {
+              AppState.discardedOptions[q.id].delete(idx);
+              row.classList.remove('discarded');
+            } else {
+              AppState.discardedOptions[q.id].add(idx);
+              row.classList.add('discarded');
+            }
+            saveProgress();
+          });
+
+          // Clic en la alternativa para responder
+          optBtn.addEventListener('click', () => {
+            handleSelectOption(idx);
+          });
+        }
+
+        elOptionsGrid.appendChild(row);
+      });
+
+      // Hint & Feedback reset or restore
+      elHintBox.classList.remove('visible');
+      elHintText.innerHTML = formatMarkdown(q.hint);
+
+      if (alreadyAnswered) {
+        showFeedback(alreadyAnswered.isCorrect, q.explanation);
+        elBtnNext.disabled = false;
+        elBtnShowHint.style.display = 'none';
+      } else {
+        elFeedbackBox.classList.remove('visible', 'correct', 'incorrect');
+        elBtnNext.disabled = true;
+        elBtnShowHint.style.display = 'inline-flex';
+      }
+
+      // Previous button visibility
+      if (AppState.currentIndex > 0) {
+        elBtnPrev.style.display = 'inline-flex';
+      } else {
+        elBtnPrev.style.display = 'none';
+      }
+
+      // Update next button label on last question
+      if (AppState.currentIndex === total - 1) {
+        elBtnNext.textContent = alreadyAnswered ? "Ver Resultados 🏆" : "Finalizar Cuestionario ➔";
+      } else {
+        elBtnNext.textContent = "Siguiente Pregunta →";
+      }
+
+      updateHUD();
+      renderMath();
+    }
+
+    /* ============================================================
+       OPTION SELECTION & FEEDBACK
+       ============================================================ */
+    function handleSelectOption(selectedIndex) {
+      const q = AppState.filteredQuestions[AppState.currentIndex];
+      const isCorrect = (selectedIndex === q.correctIndex);
+
+      AppState.userAnswers[q.id] = { selectedIndex, isCorrect };
+
+      if (isCorrect) {
+        AppState.streak++;
+        if (AppState.streak > AppState.maxStreak) AppState.maxStreak = AppState.streak;
+        
+        // Small confetti on 3+ streaks
+        if (AppState.streak >= 3 && typeof confetti === 'function') {
+          confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 } });
+        }
+      } else {
+        AppState.streak = 0;
+      }
+
+      saveProgress();
+
+      // Update Option Buttons visually
+      const rows = elOptionsGrid.querySelectorAll('.option-row');
+      rows.forEach((row, idx) => {
+        const optBtn = row.querySelector('.option-btn');
+        const discardBtn = row.querySelector('.btn-discard-outside');
+        if (optBtn) optBtn.disabled = true;
+        if (discardBtn) {
+          discardBtn.disabled = true;
+          discardBtn.style.opacity = '0.3';
+        }
+
+        if (idx === q.correctIndex) {
+          if (optBtn) optBtn.classList.add('correct');
+          row.classList.remove('discarded');
+        } else if (idx === selectedIndex) {
+          if (optBtn) optBtn.classList.add('incorrect');
+        }
+      });
+
+      showFeedback(isCorrect, q.explanation);
+      elBtnNext.disabled = false;
+      elBtnShowHint.style.display = 'none';
+
+      updateHUD();
+      renderMath();
+    }
+
+    function showFeedback(isCorrect, explanation) {
+      elFeedbackBox.className = `feedback-box visible ${isCorrect ? 'correct' : 'incorrect'}`;
+      elFeedbackHeader.innerHTML = isCorrect 
+        ? '<span>✅</span> ¡Respuesta Correcta!' 
+        : '<span>❌</span> Respuesta Incorrecta';
+      elFeedbackExplanation.innerHTML = formatMarkdown(explanation);
+    }
+
+    function toggleHint() {
+      elHintBox.classList.toggle('visible');
+    }
+
+    /* ============================================================
+       NAVIGATION (NEXT / PREV)
+       ============================================================ */
+    function handleNextQuestion() {
+      const total = AppState.filteredQuestions.length;
+      if (AppState.currentIndex < total - 1) {
+        AppState.currentIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function handlePrevQuestion() {
+      if (AppState.currentIndex > 0) {
+        AppState.currentIndex--;
+        renderQuestion();
+      }
+    }
+
+    /* ============================================================
+       HUD & METRICS (PER MODULE & PERSISTENT)
+       ============================================================ */
+    function updateHUD() {
+      const total = AppState.filteredQuestions.length;
+      const answeredInModule = AppState.filteredQuestions.filter(q => AppState.userAnswers[q.id]).length;
+      const correctInModule = AppState.filteredQuestions.filter(q => AppState.userAnswers[q.id]?.isCorrect).length;
+      const scoreInModule = correctInModule * 10;
+
+      // Progress text & fill
+      elQuestionCounter.textContent = `Pregunta ${AppState.currentIndex + 1} de ${total}`;
+      const pct = Math.round(((AppState.currentIndex + 1) / total) * 100);
+      elProgressPercent.textContent = `${pct}%`;
+      elProgressFill.style.width = `${pct}%`;
+
+      // Streak badge
+      if (AppState.streak > 1) {
+        elStreakBadge.style.display = 'flex';
+        elCurrentStreak.textContent = AppState.streak;
+      } else {
+        elStreakBadge.style.display = 'none';
+      }
+
+      // Sidebar Stats
+      elStatScore.textContent = scoreInModule;
+      const accuracy = answeredInModule > 0 ? Math.round((correctInModule / answeredInModule) * 100) : 0;
+      elStatAccuracy.textContent = `${accuracy}%`;
+      elStatStreak.textContent = AppState.maxStreak;
+      elStatAnswered.textContent = `${answeredInModule}/${total}`;
+
+      updateCategoryBadges();
+    }
+
+    /* ============================================================
+       FINAL RESULTS SCREEN
+       ============================================================ */
+    function showResults() {
+      elQuestionCard.style.display = 'none';
+      document.getElementById('hudBar').style.display = 'none';
+      elResultsScreen.classList.add('visible');
+
+      const total = AppState.filteredQuestions.length;
+      const correctInModule = AppState.filteredQuestions.filter(q => AppState.userAnswers[q.id]?.isCorrect).length;
+      const pct = Math.round((correctInModule / total) * 100);
+
+      elFinalScore.textContent = correctInModule;
+      elFinalTotal.textContent = `de ${total}`;
+
+      if (pct >= 85) {
+        elResultsTrophy.textContent = '🏆';
+        elResultsTitle.textContent = '¡Rendimiento Sobresaliente!';
+        elResultsSubtitle.textContent = `Has dominado los conceptos de este módulo con un ${pct}% de precisión. ¡Excelente trabajo!`;
+      } else if (pct >= 60) {
+        elResultsTrophy.textContent = '🎖️';
+        elResultsTitle.textContent = '¡Buen Trabajo!';
+        elResultsSubtitle.textContent = `Obtuviste un ${pct}% de aciertos. Te recomendamos repasar las preguntas erróneas para asegurar el 100%.`;
+      } else {
+        elResultsTrophy.textContent = '📚';
+        elResultsTitle.textContent = '¡Sigue Practicando!';
+        elResultsSubtitle.textContent = `Alcanzaste un ${pct}%. Revisa el Resumen Teórico y vuelve a intentarlo para reforzar los conceptos.`;
+      }
+
+      // Celebration Confetti
+      if (typeof confetti === 'function' && pct >= 60) {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      }
+
+      // Breakdown per category
+      elResultsBreakdown.innerHTML = '';
+      const catStats = {};
+
+      AppState.filteredQuestions.forEach(q => {
+        if (!catStats[q.categoryLabel]) {
+          catStats[q.categoryLabel] = { total: 0, correct: 0 };
+        }
+        catStats[q.categoryLabel].total++;
+        if (AppState.userAnswers[q.id]?.isCorrect) {
+          catStats[q.categoryLabel].correct++;
+        }
+      });
+
+      Object.entries(catStats).forEach(([label, stats]) => {
+        const catPct = Math.round((stats.correct / stats.total) * 100);
+        const row = document.createElement('div');
+        row.className = 'breakdown-row';
+        row.innerHTML = `
+          <span>${label}</span>
+          <span style="font-weight: 600; color: ${catPct >= 70 ? 'var(--success)' : 'var(--warning)'}">
+            ${stats.correct} / ${stats.total} (${catPct}%)
+          </span>
+        `;
+        elResultsBreakdown.appendChild(row);
+      });
+
+      // Show Retry Wrong button if there are errors
+      if (correctInModule < total) {
+        elBtnRetryWrong.style.display = 'inline-flex';
+      } else {
+        elBtnRetryWrong.style.display = 'none';
+      }
+    }
+
+    /* ============================================================
+       KATEX AUTO-RENDER HELPER
+       ============================================================ */
+    function renderMath() {
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    // Launch App
+    document.addEventListener('DOMContentLoaded', initApp);
+</script>
+</body>
+</html>

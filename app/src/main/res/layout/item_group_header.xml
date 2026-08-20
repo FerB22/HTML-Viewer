@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fila de grupo/carpeta expandible minimalista -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="12dp"
+    android:background="@color/bg_group_header"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- Icono minimalista de carpeta -->
+    <ImageView
+        android:id="@+id/iv_folder"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_folder"
+        android:contentDescription="Carpeta" />
+
+    <!-- Nombre del grupo -->
+    <TextView
+        android:id="@+id/tv_group_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <!-- Contador de archivos -->
+    <TextView
+        android:id="@+id/tv_group_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_dim"
+        android:textSize="13sp"
+        android:layout_marginEnd="6dp" />
+
+    <!-- Menú contextual del grupo (⋮) -->
+    <ImageView
+        android:id="@+id/iv_group_menu"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_more_vert"
+        android:contentDescription="Opciones"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@color/text_secondary" />
+
+    <!-- Flecha de expansión minimalista -->
+    <ImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_chevron_right"
+        android:contentDescription="Expandir/Colapsar"
+        app:tint="@color/text_secondary" />
+
+</LinearLayout>

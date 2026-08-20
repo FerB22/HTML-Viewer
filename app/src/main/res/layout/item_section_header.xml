@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Encabezado minimalista de la sección "Recientes" -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="12dp"
+    android:background="@color/bg_recent_header"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- Icono de reloj minimalista -->
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_clock"
+        android:contentDescription="Recientes" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:text="Abiertos Recientemente"
+        android:textColor="@color/accent_purple_light"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.06"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Flecha de expansión minimalista -->
+    <ImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_chevron_right"
+        android:contentDescription="Expandir/Colapsar"
+        app:tint="@color/text_secondary" />
+
+</LinearLayout>
