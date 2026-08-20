@@ -156,8 +156,7 @@ class MainActivity : AppCompatActivity() {
         adapter = LibraryAdapter(
             onFileClick = { file -> openFileViewer(file) },
             onFileMenuClick = { file, view -> showFilePopupMenu(file, view) },
-            onGroupMenuClick = { groupId, groupName, view -> showGroupPopupMenu(groupId, groupName, view) },
-            onGroupClick = { groupId, groupName -> showRenameGroupDialog(groupId, groupName) }
+            onGroupMenuClick = { groupId, groupName, view -> showGroupPopupMenu(groupId, groupName, view) }
         )
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter

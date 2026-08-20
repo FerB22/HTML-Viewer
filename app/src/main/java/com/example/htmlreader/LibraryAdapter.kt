@@ -33,8 +33,7 @@ sealed class LibraryItem {
 class LibraryAdapter(
     private val onFileClick: (FileItem) -> Unit,
     private val onFileMenuClick: (FileItem, View) -> Unit,
-    private val onGroupMenuClick: (String, String, View) -> Unit,   // groupId, name, anchor
-    private val onGroupClick: (String, String) -> Unit              // groupId, name (al hacer clic en el grupo)
+    private val onGroupMenuClick: (String, String, View) -> Unit   // groupId, name, anchor
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -191,20 +190,15 @@ class LibraryAdapter(
             tvCount.text = "(${item.fileCount})"
             ivArrow.setImageResource(if (item.isExpanded) R.drawable.ic_chevron_down else R.drawable.ic_chevron_right)
 
-            // Flecha: altera el estado expandido/colapsado
-            ivArrow.setOnClickListener { onToggle() }
+            // Al presionar sobre cualquier parte del grupo, expande/colapsa los archivos
+            itemView.setOnClickListener { onToggle() }
 
             if (item.groupId == null) {
                 ivMenu.visibility = View.INVISIBLE
-                itemView.setOnClickListener { onToggle() }
             } else {
                 ivMenu.visibility = View.VISIBLE
                 ivMenu.setOnClickListener { v ->
                     onGroupMenuClick(item.groupId, item.name, v)
-                }
-                // Al presionar sobre el grupo, abre el diálogo para editar nombre
-                itemView.setOnClickListener {
-                    onGroupClick(item.groupId, item.name)
                 }
             }
         }

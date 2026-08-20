@@ -3,20 +3,20 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Fondos -->
+    <!-- Fondos oscuros minimalistas -->
     <color name="bg_primary">#0B0C10</color>
     <color name="bg_toolbar">#0F1117</color>
     <color name="bg_group_header">#141722</color>
     <color name="bg_file_item">#0B0C10</color>
     <color name="bg_recent_header">#11141F</color>
 
-    <!-- Acento -->
-    <color name="accent_purple">#6366F1</color>
-    <color name="accent_purple_light">#818CF8</color>
-    <color name="accent_purple_dark">#4F46E5</color>
+    <!-- Acentos blanco y negro -->
+    <color name="accent_purple">#FFFFFF</color>
+    <color name="accent_purple_light">#FFFFFF</color>
+    <color name="accent_purple_dark">#E2E8F0</color>
 
-    <!-- Texto -->
-    <color name="text_primary">#F1F5F9</color>
+    <!-- Texto monocromático -->
+    <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#94A3B8</color>
     <color name="text_dim">#64748B</color>
 

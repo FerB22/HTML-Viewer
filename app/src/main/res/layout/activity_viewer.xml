@@ -27,8 +27,8 @@
         app:fabCustomSize="56dp"
         app:maxImageSize="28dp"
         app:srcCompat="@drawable/ic_arrow_back"
-        app:backgroundTint="@color/accent_purple"
-        app:tint="@color/white"
+        app:backgroundTint="@color/white"
+        app:tint="@color/black"
         app:elevation="6dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
