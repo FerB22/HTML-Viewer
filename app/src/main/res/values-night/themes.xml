@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.HTMLReader" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="Base.Theme.HTMLViewer" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:windowBackground">@color/bg_primary</item>
         <item name="android:statusBarColor">@color/bg_toolbar</item>
         <item name="android:navigationBarColor">@color/bg_primary</item>
@@ -13,5 +13,5 @@
         <item name="colorContainer">@color/bg_toolbar</item>
     </style>
 
-    <style name="Theme.HTMLReader" parent="Base.Theme.HTMLReader" />
+    <style name="Theme.HTMLViewer" parent="Base.Theme.HTMLViewer" />
 </resources>

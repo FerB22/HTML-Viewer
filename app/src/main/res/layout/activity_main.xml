@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/bg_toolbar"
-            app:title="HTML Reader"
+            app:title="HTML Viewer"
             app:titleCentered="false"
             app:titleTextColor="@color/text_primary"
             app:subtitleTextColor="@color/text_secondary" />

@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "HTML Reader"
+rootProject.name = "HTML Viewer"
 include(":app")
  

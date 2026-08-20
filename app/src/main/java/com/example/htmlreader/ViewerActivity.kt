@@ -46,7 +46,7 @@ class ViewerActivity : AppCompatActivity() {
         fabBack.setOnClickListener { finish() }
 
         val uriString = intent.getStringExtra(EXTRA_FILE_URI)
-        val fileName  = intent.getStringExtra(EXTRA_FILE_NAME) ?: "HTML Reader"
+        val fileName  = intent.getStringExtra(EXTRA_FILE_NAME) ?: "HTML Viewer"
         val fileId    = intent.getStringExtra(EXTRA_FILE_ID)
 
         title = fileName
@@ -84,7 +84,6 @@ class ViewerActivity : AppCompatActivity() {
             allowFileAccess         = true
             allowContentAccess      = true
             domStorageEnabled       = true
-            databaseEnabled         = true
             useWideViewPort         = true
             loadWithOverviewMode    = true
             builtInZoomControls     = true
