@@ -316,7 +316,7 @@ class MainActivity : AppCompatActivity() {
         popup.setOnMenuItemClickListener { item ->
             when (item.title) {
                 "Ver" -> openFileViewer(file)
-                "Crear acceso directo" -> createHomeScreenShortcut(file)
+                "Crear acceso directo" -> showCreateShortcutDialog(file)
                 "Mover a grupo" -> showMoveToGroupDialog(file)
                 "Eliminar" -> {
                     repo.removeFile(file.id)
@@ -329,26 +329,57 @@ class MainActivity : AppCompatActivity() {
         popup.show()
     }
 
-    private fun createHomeScreenShortcut(file: FileItem) {
+    private fun showCreateShortcutDialog(file: FileItem) {
+        val group = file.groupId?.let { gid -> repo.getGroups().find { it.id == gid } }
+        val themes = ShortcutIconHelper.getAvailableThemes()
+        val defaultIndex = ShortcutIconHelper.detectBestThemeIndex(file.name, group?.name)
+
+        var selectedIndex = defaultIndex
+        val items = themes.map { it.title }.toTypedArray()
+
+        val cleanName = file.name
+            .replace(".html", "", ignoreCase = true)
+            .replace(".htm", "", ignoreCase = true)
+
+        AlertDialog.Builder(this)
+            .setTitle("Icono para \"$cleanName\"")
+            .setSingleChoiceItems(items, defaultIndex) { _, which ->
+                selectedIndex = which
+            }
+            .setPositiveButton("Crear") { _, _ ->
+                val chosen = themes[selectedIndex]
+                createHomeScreenShortcut(file, chosen.iconResId, chosen.bgColor)
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun createHomeScreenShortcut(file: FileItem, iconResId: Int, bgColor: Int) {
         if (ShortcutManagerCompat.isRequestPinShortcutSupported(this)) {
+            val cleanName = file.name
+                .replace(".html", "", ignoreCase = true)
+                .replace(".htm", "", ignoreCase = true)
+
             val shortcutIntent = Intent(this, ViewerActivity::class.java).apply {
                 action = Intent.ACTION_VIEW
                 putExtra(ViewerActivity.EXTRA_FILE_URI, file.uri)
-                putExtra(ViewerActivity.EXTRA_FILE_NAME, file.name)
+                putExtra(ViewerActivity.EXTRA_FILE_NAME, cleanName)
                 putExtra(ViewerActivity.EXTRA_FILE_ID, file.id)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
 
+            val iconCompat = ShortcutIconHelper.createShortcutIcon(this, iconResId, bgColor)
+
             val pinShortcutInfo = ShortcutInfoCompat.Builder(this, "shortcut_${file.id}")
-                .setShortLabel(file.name)
-                .setLongLabel(file.name)
-                .setIcon(IconCompat.createWithResource(this, R.mipmap.ic_launcher))
+                .setShortLabel(cleanName)
+                .setLongLabel(cleanName)
+                .setIcon(iconCompat)
                 .setIntent(shortcutIntent)
                 .build()
 
             val success = ShortcutManagerCompat.requestPinShortcut(this, pinShortcutInfo, null)
             if (success) {
-                Toast.makeText(this, "Acceso directo solicitado para \"${file.name}\"", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Acceso directo creado para \"$cleanName\"", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "No se pudo crear el acceso directo", Toast.LENGTH_SHORT).show()
             }
