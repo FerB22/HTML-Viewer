@@ -88,14 +88,9 @@ HTML-Viewer/
 │   ├── src/
 │   │   ├── main/
 │   │   │   ├── assets/
-│   │   │   │   └── html_study/             # Carpeta de estudio preinstalada
-│   │   │   │       ├── Cuestionario_General_Semestre_4/
-│   │   │   │       │   ├── Cuestionario_General_Semestre_4.html
-│   │   │   │       │   ├── styles.css
-│   │   │   │       │   ├── data.js
-│   │   │   │       │   └── app.js
-│   │   │   │       └── Estadistica_Descriptiva_Exp1/
-│   │   │   │           └── Cuestionario_Estadistica_Exp1.html
+│   │   │   │   └── html_study/             # Guía interactiva preinstalada
+│   │   │   │       └── Guia_de_Inicio/
+│   │   │   │           └── Bienvenida.html
 │   │   │   ├── java/com/example/htmlreader/
 │   │   │   │   ├── MainActivity.kt         # Biblioteca principal, Speed Dial y atajos
 │   │   │   │   ├── ViewerActivity.kt       # Motor de renderizado WebView a pantalla completa

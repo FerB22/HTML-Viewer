@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenido a HTML Viewer</title>
+  
+  <!-- Tipografía moderna -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-body: #0b0c10;
+      --bg-card: #131722;
+      --bg-card-hover: #181d2b;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --card-border: #1e293b;
+      --accent-white: #ffffff;
+      --accent-pill: #1f2536;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 24px 18px 48px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* Hero Header */
+    .hero {
+      text-align: center;
+      padding: 32px 16px 24px;
+      background: linear-gradient(180deg, #181c2b 0%, #11141f 100%);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      margin-bottom: 24px;
+    }
+
+    .badge-welcome {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--accent-pill);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--accent-white);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Section Grid */
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent-white);
+      margin: 28px 0 14px 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 14px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:active {
+      transform: scale(0.99);
+      border-color: #334155;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #1c2233;
+      border: 1px solid #28334a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent-white);
+    }
+
+    .card-text {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .step-number {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #94a3b8;
+      background: #1f2638;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-right: 6px;
+    }
+
+    .code-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      background: #1a2130;
+      color: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #2d3748;
+    }
+
+    /* Footer Note */
+    .footer-note {
+      text-align: center;
+      padding: 24px 12px;
+      font-size: 0.82rem;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Hero Header -->
+    <header class="hero">
+      <span class="badge-welcome">Guía de Inicio Rápido</span>
+      <h1 class="hero-title">HTML Viewer</h1>
+      <p class="hero-subtitle">Tu visor y motor interactivo offline para páginas web, cuestionarios y documentos HTML en Android.</p>
+    </header>
+
+    <!-- Guía de Uso Paso a Paso -->
+    <h2 class="section-title">🚀 ¿Cómo usar la aplicación?</h2>
+
+    <!-- Paso 1 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon-box">➕</div>
+        <h3 class="card-title"><span class="step-number">1</span> Importar tus archivos HTML</h3>
+      </div>
+      <p class="card-text">
+        Toca el botón <strong>+</strong> en la esquina inferior derecha y selecciona <strong>"Importar archivo HTML"</strong> para cargar páginas web, cuestionarios o guías almacenadas en tu celular.
+      </p>
+    </div>
+
+    <!-- Paso 2 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon-box">📁</div>
+        <h3 class="card-title"><span class="step-number">2</span> Organizar en Carpetas y Materias</h3>
+      </div>
+      <p class="card-text">
+        Crea carpetas tocando el botón <strong>+</strong> y seleccionando <strong>"Nueva carpeta"</strong>. Puedes mover cualquier archivo a su respectiva materia tocando el menú de 3 puntos (<span class="code-pill">⋮</span>) &rarr; <em>"Mover a grupo"</em>.
+      </p>
+    </div>
+
+    <!-- Paso 3 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon-box">📲</div>
+        <h3 class="card-title"><span class="step-number">3</span> Accesos directos a la Pantalla de Inicio</h3>
+      </div>
+      <p class="card-text">
+        En el menú de 3 puntos (<span class="code-pill">⋮</span>) de cualquier archivo, elige <strong>"Crear acceso directo"</strong>. Podrás elegir un icono temático en alta resolución (Estadística, Código, General, BD, Python) para entrar directo a tu página desde el escritorio de tu celular con 1 toque.
+      </p>
+    </div>
+
+    <!-- Paso 4 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon-box">⚡</div>
+        <h3 class="card-title"><span class="step-number">4</span> Compatibilidad total con CSS, JS y KaTeX</h3>
+      </div>
+      <p class="card-text">
+        La aplicación ejecuta motores <span class="code-pill">styles.css</span>, lógica <span class="code-pill">app.js</span>, fórmulas matemáticas con <strong>KaTeX</strong>, animaciones y botones de descarte con la misma potencia que Google Chrome.
+      </p>
+    </div>
+
+    <!-- Paso 5 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon-box">💾</div>
+        <h3 class="card-title"><span class="step-number">5</span> 100% Offline y Privacidad Total</h3>
+      </div>
+      <p class="card-text">
+        Todo el progreso, respuestas y notas de tus cuestionarios se guardan localmente en tu teléfono mediante <span class="code-pill">localStorage</span>. No se requiere conexión a internet y tus archivos nunca salen de tu dispositivo.
+      </p>
+    </div>
+
+    <footer class="footer-note">
+      HTML Viewer · Desarrollado para optimizar el estudio interactivo y autónomo.
+    </footer>
+
+  </div>
+
+</body>
+</html>
