@@ -20,7 +20,7 @@
 
 ## 🌟 Descripción General
 
-**HTML Viewer** es una aplicación nativa de Android optimizada para visualizar, organizar y ejecutar páginas web interactivas, cuestionarios de estudio y documentos HTML complejos en modo **100% offline**. 
+**HTML Viewer** es una aplicación nativa de Android optimizada para visualizar, organizar y ejecutar páginas web interactivas, cuestionarios de estudio y documentos HTML complejos en modo **100 % sin conexión**. 
 
 A diferencia de los visores de texto convencionales, **HTML Viewer** incorpora un motor Chromium acelerado por hardware con soporte completo para:
 - 🎨 Hojas de estilo externas (`styles.css`).
@@ -145,7 +145,7 @@ Para incluir nuevas asignaturas o cuestionarios permanentes en la aplicación:
 
 ## 👤 Autor
 
-* **Fernando Barraza** - [@FerB22](https://github.com/FerB22)
+* **Fernando Barra** - [@FerB22](https://github.com/FerB22)
 
 ---
 
