@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Lector y visor interactivo de archivos HTML para Android con persistencia offline, renderizado completo de CSS/JS y accesos directos temáticos en la pantalla de inicio.</strong>
+  <strong>Lector y visor interactivo de archivos HTML para Android con persistencia fuera de Internet, renderizado completo de CSS/JS y accesos directos temáticos en la pantalla de inicio.</strong>
 </p>
 
 <p align="center">
