@@ -7,8 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.OpenableColumns
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -37,8 +35,15 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyState: LinearLayout
-    private lateinit var fabImport: FloatingActionButton
     private lateinit var toolbar: MaterialToolbar
+
+    // Speed Dial views
+    private lateinit var viewDimOverlay: View
+    private lateinit var layoutSpeedDial: LinearLayout
+    private lateinit var optionNewGroup: LinearLayout
+    private lateinit var optionImportFile: LinearLayout
+    private lateinit var fabMain: FloatingActionButton
+    private var isSpeedDialOpen = false
 
     // ─── Launcher de importación múltiple de archivos ────────────────────────
     private val openMultipleFilesLauncher =
@@ -95,12 +100,12 @@ class MainActivity : AppCompatActivity() {
         setupWindowInsets()
         setupToolbar()
         setupRecyclerView()
-        setupFab()
+        setupSpeedDial()
     }
 
     private fun setupWindowInsets() {
-        val root = findViewById<View>(R.id.root_container)
-        val appbar = findViewById<View>(R.id.appbar)
+        val root = findViewById<View>(R.id.root_coordinator)
+        val appbar = findViewById<View>(R.id.app_bar_layout)
 
         @Suppress("DEPRECATION")
         window.statusBarColor = ContextCompat.getColor(this, R.color.bg_toolbar)
@@ -113,11 +118,11 @@ class MainActivity : AppCompatActivity() {
 
             appbar.setPadding(0, statusBarTop, 0, 0)
 
-            val params = fabImport.layoutParams as? ViewGroup.MarginLayoutParams
+            val params = layoutSpeedDial.layoutParams as? ViewGroup.MarginLayoutParams
             if (params != null) {
                 val baseMargin = (36 * resources.displayMetrics.density).toInt()
                 params.bottomMargin = baseMargin + navBarBottom
-                fabImport.layoutParams = params
+                layoutSpeedDial.layoutParams = params
             }
 
             insets
@@ -130,29 +135,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindViews() {
-        toolbar      = findViewById(R.id.toolbar)
-        recyclerView = findViewById(R.id.recycler_view)
-        emptyState   = findViewById(R.id.empty_state)
-        fabImport    = findViewById(R.id.fab_import)
+        toolbar          = findViewById(R.id.toolbar)
+        recyclerView     = findViewById(R.id.recycler_view)
+        emptyState       = findViewById(R.id.layout_empty_state)
+        viewDimOverlay   = findViewById(R.id.view_dim_overlay)
+        layoutSpeedDial  = findViewById(R.id.layout_speed_dial)
+        optionNewGroup   = findViewById(R.id.option_new_group)
+        optionImportFile = findViewById(R.id.option_import_file)
+        fabMain          = findViewById(R.id.fab_main)
     }
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_library, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_new_group -> {
-                showCreateGroupDialog()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun setupRecyclerView() {
@@ -165,9 +159,75 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun setupFab() {
-        fabImport.setOnClickListener {
+    private fun setupSpeedDial() {
+        fabMain.setOnClickListener {
+            toggleSpeedDial()
+        }
+
+        viewDimOverlay.setOnClickListener {
+            closeSpeedDial()
+        }
+
+        optionNewGroup.setOnClickListener {
+            closeSpeedDial()
+            showCreateGroupDialog()
+        }
+
+        optionImportFile.setOnClickListener {
+            closeSpeedDial()
             checkPermissionAndImportFiles()
+        }
+    }
+
+    private fun toggleSpeedDial() {
+        if (isSpeedDialOpen) closeSpeedDial() else openSpeedDial()
+    }
+
+    private fun openSpeedDial() {
+        isSpeedDialOpen = true
+        viewDimOverlay.visibility = View.VISIBLE
+        viewDimOverlay.alpha = 0f
+        viewDimOverlay.animate().alpha(1f).setDuration(200).start()
+
+        fabMain.animate().rotation(45f).setDuration(200).start()
+
+        optionNewGroup.visibility = View.VISIBLE
+        optionNewGroup.alpha = 0f
+        optionNewGroup.translationY = 40f
+        optionNewGroup.animate().alpha(1f).translationY(0f).setDuration(200).setStartDelay(50).start()
+
+        optionImportFile.visibility = View.VISIBLE
+        optionImportFile.alpha = 0f
+        optionImportFile.translationY = 40f
+        optionImportFile.animate().alpha(1f).translationY(0f).setDuration(200).setStartDelay(0).start()
+    }
+
+    private fun closeSpeedDial() {
+        if (!isSpeedDialOpen) return
+        isSpeedDialOpen = false
+
+        viewDimOverlay.animate().alpha(0f).setDuration(200).withEndAction {
+            viewDimOverlay.visibility = View.GONE
+        }.start()
+
+        fabMain.animate().rotation(0f).setDuration(200).start()
+
+        optionNewGroup.animate().alpha(0f).translationY(30f).setDuration(150).withEndAction {
+            optionNewGroup.visibility = View.GONE
+        }.start()
+
+        optionImportFile.animate().alpha(0f).translationY(30f).setDuration(150).withEndAction {
+            optionImportFile.visibility = View.GONE
+        }.start()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (isSpeedDialOpen) {
+            closeSpeedDial()
+        } else {
+            @Suppress("DEPRECATION")
+            super.onBackPressed()
         }
     }
 
@@ -206,10 +266,10 @@ class MainActivity : AppCompatActivity() {
     private fun launchMultipleFilesPicker() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "text/html"
-            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("text/html", "text/htm", "application/xhtml+xml", "application/octet-stream"))
+            type = "*/*"
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("text/html", "text/plain", "application/xhtml+xml"))
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+            addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         openMultipleFilesLauncher.launch(intent)
     }
@@ -316,23 +376,25 @@ class MainActivity : AppCompatActivity() {
         popup.show()
     }
 
-    // ─── Diálogos ────────────────────────────────────────────────────────────
+    // ─── Diálogos ─────────────────────────────────────────────────────────────
 
     private fun showCreateGroupDialog() {
+        val input = EditText(this).apply {
+            hint = "Nombre de la carpeta"
+            setSingleLine(true)
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setHintTextColor(ContextCompat.getColor(context, R.color.text_dim))
+        }
+
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            val density = resources.displayMetrics.density
-            val pad = (20 * density).toInt()
-            setPadding(pad, (10 * density).toInt(), pad, (5 * density).toInt())
+            val pad = (20 * resources.displayMetrics.density).toInt()
+            setPadding(pad, pad / 2, pad, pad / 2)
+            addView(input)
         }
-        val input = EditText(this).apply {
-            hint = "Nombre del grupo"
-            isSingleLine = true
-        }
-        container.addView(input)
 
         AlertDialog.Builder(this)
-            .setTitle("Nuevo grupo")
+            .setTitle("Nueva carpeta")
             .setView(container)
             .setPositiveButton("Crear") { _, _ ->
                 val name = input.text.toString().trim()
@@ -346,25 +408,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showRenameGroupDialog(groupId: String, currentName: String) {
-        val container = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            val density = resources.displayMetrics.density
-            val pad = (20 * density).toInt()
-            setPadding(pad, (10 * density).toInt(), pad, (5 * density).toInt())
-        }
         val input = EditText(this).apply {
             setText(currentName)
-            setSelection(currentName.length)
-            isSingleLine = true
+            setSingleLine(true)
+            selectAll()
+            setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+            setHintTextColor(ContextCompat.getColor(context, R.color.text_dim))
         }
-        container.addView(input)
+
+        val container = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            val pad = (20 * resources.displayMetrics.density).toInt()
+            setPadding(pad, pad / 2, pad, pad / 2)
+            addView(input)
+        }
 
         AlertDialog.Builder(this)
-            .setTitle("Renombrar grupo")
+            .setTitle("Renombrar carpeta")
             .setView(container)
             .setPositiveButton("Guardar") { _, _ ->
                 val newName = input.text.toString().trim()
-                if (newName.isNotEmpty()) {
+                if (newName.isNotEmpty() && newName != currentName) {
                     repo.renameGroup(groupId, newName)
                     loadLibraryData()
                 }
@@ -375,16 +439,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun showMoveToGroupDialog(file: FileItem) {
         val groups = repo.getGroups()
-        val options = mutableListOf("Sin grupo")
+        val options = mutableListOf<String>("Sin grupo")
         options.addAll(groups.map { it.name })
 
+        val currentSelection = if (file.groupId == null) 0
+        else groups.indexOfFirst { it.id == file.groupId } + 1
+
         AlertDialog.Builder(this)
-            .setTitle("Mover \"${file.name}\" a...")
-            .setItems(options.toTypedArray()) { _, which ->
+            .setTitle("Mover \"${file.name}\" a:")
+            .setSingleChoiceItems(options.toTypedArray(), currentSelection) { dialog, which ->
                 val targetGroupId = if (which == 0) null else groups[which - 1].id
                 repo.moveFileToGroup(file.id, targetGroupId)
                 loadLibraryData()
+                dialog.dismiss()
             }
+            .setNegativeButton("Cancelar", null)
             .show()
     }
 }

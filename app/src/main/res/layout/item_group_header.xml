@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Fila de grupo/carpeta expandible minimalista -->
+<!-- Fila descongestionada de grupo/carpeta sin flecha con 2 líneas -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="62dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingStart="16dp"
@@ -18,30 +18,41 @@
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:src="@drawable/ic_folder"
-        android:contentDescription="Carpeta" />
+        android:contentDescription="Carpeta"
+        app:tint="@color/white" />
 
-    <!-- Nombre del grupo -->
-    <TextView
-        android:id="@+id/tv_group_name"
+    <!-- Bloque vertical con título y contador secundario -->
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginStart="14dp"
-        android:textColor="@color/text_primary"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-medium"
-        android:maxLines="1"
-        android:ellipsize="end" />
+        android:layout_marginEnd="8dp">
 
-    <!-- Contador de archivos -->
-    <TextView
-        android:id="@+id/tv_group_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/text_dim"
-        android:textSize="13sp"
-        android:layout_marginEnd="6dp" />
+        <!-- Nombre del grupo a ancho completo -->
+        <TextView
+            android:id="@+id/tv_group_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- Contador sutil secundario en gris ("X archivos") -->
+        <TextView
+            android:id="@+id/tv_group_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:maxLines="1" />
+
+    </LinearLayout>
 
     <!-- Menú contextual del grupo (⋮) -->
     <ImageView
@@ -52,16 +63,6 @@
         android:src="@drawable/ic_more_vert"
         android:contentDescription="Opciones"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:tint="@color/text_secondary" />
-
-    <!-- Flecha de expansión minimalista -->
-    <ImageView
-        android:id="@+id/iv_arrow"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:padding="8dp"
-        android:src="@drawable/ic_chevron_right"
-        android:contentDescription="Expandir/Colapsar"
         app:tint="@color/text_secondary" />
 
 </LinearLayout>

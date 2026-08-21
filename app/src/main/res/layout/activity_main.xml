@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Layout principal de la biblioteca con Speed Dial FAB -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/bg_primary">
 
-    <!-- AppBar con Toolbar -->
+    <!-- AppBar & Toolbar minimalista -->
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:background="@color/bg_toolbar"
-        app:elevation="0dp"
-        app:liftOnScroll="false">
+        app:liftOnScroll="false"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -30,18 +31,19 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Lista principal -->
+    <!-- Lista vertical principal (Carrusel de recientes, Carpetas y Archivos) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingBottom="100dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_group_header" />
 
-    <!-- Estado vacío (sin archivos importados) -->
+    <!-- Estado vacío (sin archivos) -->
     <LinearLayout
-        android:id="@+id/empty_state"
+        android:id="@+id/layout_empty_state"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -71,27 +73,125 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Toca el botón + para importar archivos HTML"
+            android:text="Toca el botón + para importar archivos o crear carpetas"
             android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:gravity="center" />
 
     </LinearLayout>
 
-    <!-- FAB: Importar archivos (+ más grande y mejor posicionado) -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_import"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+    <!-- Capa oscura de desenfoque/fondo para el Speed Dial -->
+    <View
+        android:id="@+id/view_dim_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- Contenedor Speed Dial FAB -->
+    <LinearLayout
+        android:id="@+id/layout_speed_dial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="36dp"
-        android:contentDescription="Importar archivos HTML"
-        app:fabCustomSize="64dp"
-        app:maxImageSize="30dp"
-        app:srcCompat="@drawable/ic_add"
-        app:backgroundTint="@color/white"
-        app:tint="@color/black"
-        app:elevation="6dp" />
+        android:orientation="vertical"
+        android:gravity="end|bottom">
+
+        <!-- Opción 1: Nueva Carpeta -->
+        <LinearLayout
+            android:id="@+id/option_new_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nueva carpeta"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_pill_label"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:layout_marginEnd="12dp"
+                android:elevation="4dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_option_new_group"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="Nueva carpeta"
+                app:fabCustomSize="48dp"
+                app:maxImageSize="22dp"
+                app:srcCompat="@drawable/ic_folder"
+                app:backgroundTint="@color/bg_group_header"
+                app:tint="@color/white"
+                app:elevation="4dp" />
+
+        </LinearLayout>
+
+        <!-- Opción 2: Importar archivo HTML -->
+        <LinearLayout
+            android:id="@+id/option_import_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Importar archivo HTML"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_pill_label"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:layout_marginEnd="12dp"
+                android:elevation="4dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_option_import_file"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="Importar archivo HTML"
+                app:fabCustomSize="48dp"
+                app:maxImageSize="22dp"
+                app:srcCompat="@drawable/ic_file"
+                app:backgroundTint="@color/bg_group_header"
+                app:tint="@color/white"
+                app:elevation="4dp" />
+
+        </LinearLayout>
+
+        <!-- Botón Principal (+) con animación Speed Dial -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_main"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:contentDescription="Opciones de creación"
+            app:fabCustomSize="64dp"
+            app:maxImageSize="30dp"
+            app:srcCompat="@drawable/ic_add"
+            app:backgroundTint="@color/white"
+            app:tint="@color/black"
+            app:elevation="6dp" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

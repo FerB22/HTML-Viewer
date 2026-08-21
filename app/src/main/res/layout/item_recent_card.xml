@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tarjeta horizontal compacta para archivos recientes -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="145dp"
+    android:layout_height="96dp"
+    android:layout_marginEnd="10dp"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/bg_recent_card"
+    android:foreground="?attr/selectableItemBackground">
+
+    <!-- Fila superior de iconos -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_file"
+            android:contentDescription="HTML"
+            app:tint="@color/white" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:src="@drawable/ic_clock"
+            android:contentDescription="Reciente"
+            app:tint="@color/text_dim" />
+
+    </LinearLayout>
+
+    <!-- Nombre del archivo (2 líneas máximo) -->
+    <TextView
+        android:id="@+id/tv_recent_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <!-- Fecha / Tiempo de apertura -->
+    <TextView
+        android:id="@+id/tv_recent_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/text_dim"
+        android:textSize="11sp"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+</LinearLayout>

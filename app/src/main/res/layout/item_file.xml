@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Fila minimalista de archivo en la biblioteca -->
+<!-- Fila minimalista de archivo con nombre limpio y metadatos secundarios -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
+    android:layout_height="58dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingStart="40dp"
@@ -12,10 +12,11 @@
     android:background="@color/bg_file_item"
     android:foreground="?attr/selectableItemBackground">
 
-    <!-- Separador izquierdo (línea de árbol) -->
+    <!-- Separador vertical (línea de árbol sutil) -->
     <View
+        android:id="@+id/v_tree_line"
         android:layout_width="2dp"
-        android:layout_height="28dp"
+        android:layout_height="32dp"
         android:background="@color/divider"
         android:layout_marginEnd="14dp" />
 
@@ -24,19 +25,41 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/ic_file"
-        android:contentDescription="Archivo HTML" />
+        android:contentDescription="Archivo HTML"
+        app:tint="@color/white" />
 
-    <!-- Nombre del archivo -->
-    <TextView
-        android:id="@+id/tv_file_name"
+    <!-- Bloque vertical con nombre limpio y metadatos -->
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginStart="12dp"
-        android:textColor="@color/text_primary"
-        android:textSize="14sp"
-        android:maxLines="1"
-        android:ellipsize="middle" />
+        android:layout_marginEnd="8dp">
+
+        <!-- Nombre del archivo sin extensión -->
+        <TextView
+            android:id="@+id/tv_file_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- Metadatos secundarios (fecha / estado) -->
+        <TextView
+            android:id="@+id/tv_file_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/text_dim"
+            android:textSize="11sp"
+            android:maxLines="1" />
+
+    </LinearLayout>
 
     <!-- Menú contextual (⋮) -->
     <ImageView
