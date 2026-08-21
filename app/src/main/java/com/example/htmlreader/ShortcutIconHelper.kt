@@ -18,11 +18,11 @@ object ShortcutIconHelper {
     )
 
     fun getAvailableThemes(): List<ThematicTheme> = listOf(
-        ThematicTheme("📊 Estadística Descriptiva", R.drawable.ic_shortcut_stats, Color.parseColor("#131A2A")),
-        ThematicTheme("🎓 Cuestionario General", R.drawable.ic_shortcut_general, Color.parseColor("#131A2A")),
-        ThematicTheme("💻 Código / Móviles / Java", R.drawable.ic_shortcut_code, Color.parseColor("#131A2A")),
-        ThematicTheme("🗄️ Base de Datos / SQL", R.drawable.ic_shortcut_database, Color.parseColor("#131A2A")),
-        ThematicTheme("🐍 Python & Pandas", R.drawable.ic_shortcut_python, Color.parseColor("#131A2A"))
+        ThematicTheme("Estadística Descriptiva", R.drawable.ic_shortcut_stats, Color.parseColor("#131A2A")),
+        ThematicTheme("Cuestionario General", R.drawable.ic_shortcut_general, Color.parseColor("#131A2A")),
+        ThematicTheme("Código / Móviles / Java", R.drawable.ic_shortcut_code, Color.parseColor("#131A2A")),
+        ThematicTheme("Base de Datos / SQL", R.drawable.ic_shortcut_database, Color.parseColor("#131A2A")),
+        ThematicTheme("Python & Pandas", R.drawable.ic_shortcut_python, Color.parseColor("#131A2A"))
     )
 
     fun detectBestThemeIndex(fileName: String, groupName: String?): Int {

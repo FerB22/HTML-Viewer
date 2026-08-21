@@ -335,23 +335,60 @@ class MainActivity : AppCompatActivity() {
         val defaultIndex = ShortcutIconHelper.detectBestThemeIndex(file.name, group?.name)
 
         var selectedIndex = defaultIndex
-        val items = themes.map { it.title }.toTypedArray()
 
         val cleanName = file.name
             .replace(".html", "", ignoreCase = true)
             .replace(".htm", "", ignoreCase = true)
 
-        AlertDialog.Builder(this)
-            .setTitle("Icono para \"$cleanName\"")
-            .setSingleChoiceItems(items, defaultIndex) { _, which ->
-                selectedIndex = which
+        val dialogView = layoutInflater.inflate(R.layout.dialog_shortcut_picker, null)
+        val tvFileName: android.widget.TextView = dialogView.findViewById(R.id.tv_shortcut_file_name)
+        val optionsContainer: LinearLayout = dialogView.findViewById(R.id.layout_shortcut_options)
+        val btnCancel: android.widget.Button = dialogView.findViewById(R.id.btn_shortcut_cancel)
+        val btnConfirm: android.widget.Button = dialogView.findViewById(R.id.btn_shortcut_confirm)
+
+        tvFileName.text = cleanName
+
+        val radioButtons = mutableListOf<android.widget.RadioButton>()
+
+        themes.forEachIndexed { index, theme ->
+            val row = layoutInflater.inflate(R.layout.item_shortcut_dialog_row, optionsContainer, false)
+            val ivIcon: android.widget.ImageView = row.findViewById(R.id.iv_option_icon)
+            val tvTitle: android.widget.TextView = row.findViewById(R.id.tv_option_title)
+            val rbCheck: android.widget.RadioButton = row.findViewById(R.id.rb_option_check)
+
+            ivIcon.setImageResource(theme.iconResId)
+            tvTitle.text = theme.title
+            rbCheck.isChecked = (index == defaultIndex)
+
+            radioButtons.add(rbCheck)
+
+            row.setOnClickListener {
+                selectedIndex = index
+                radioButtons.forEachIndexed { i, rb ->
+                    rb.isChecked = (i == index)
+                }
             }
-            .setPositiveButton("Crear") { _, _ ->
-                val chosen = themes[selectedIndex]
-                createHomeScreenShortcut(file, chosen.iconResId, chosen.bgColor)
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
+
+            optionsContainer.addView(row)
+        }
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnConfirm.setOnClickListener {
+            val chosen = themes[selectedIndex]
+            createHomeScreenShortcut(file, chosen.iconResId, chosen.bgColor)
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun createHomeScreenShortcut(file: FileItem, iconResId: Int, bgColor: Int) {
