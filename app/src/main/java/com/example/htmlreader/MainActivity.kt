@@ -19,6 +19,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -246,12 +249,14 @@ class MainActivity : AppCompatActivity() {
     private fun showFilePopupMenu(file: FileItem, anchor: View) {
         val popup = PopupMenu(this, anchor)
         popup.menu.add("Ver")
+        popup.menu.add("Crear acceso directo")
         popup.menu.add("Mover a grupo")
         popup.menu.add("Eliminar")
 
         popup.setOnMenuItemClickListener { item ->
             when (item.title) {
                 "Ver" -> openFileViewer(file)
+                "Crear acceso directo" -> createHomeScreenShortcut(file)
                 "Mover a grupo" -> showMoveToGroupDialog(file)
                 "Eliminar" -> {
                     repo.removeFile(file.id)
@@ -262,6 +267,34 @@ class MainActivity : AppCompatActivity() {
             true
         }
         popup.show()
+    }
+
+    private fun createHomeScreenShortcut(file: FileItem) {
+        if (ShortcutManagerCompat.isRequestPinShortcutSupported(this)) {
+            val shortcutIntent = Intent(this, ViewerActivity::class.java).apply {
+                action = Intent.ACTION_VIEW
+                putExtra(ViewerActivity.EXTRA_FILE_URI, file.uri)
+                putExtra(ViewerActivity.EXTRA_FILE_NAME, file.name)
+                putExtra(ViewerActivity.EXTRA_FILE_ID, file.id)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+
+            val pinShortcutInfo = ShortcutInfoCompat.Builder(this, "shortcut_${file.id}")
+                .setShortLabel(file.name)
+                .setLongLabel(file.name)
+                .setIcon(IconCompat.createWithResource(this, R.mipmap.ic_launcher))
+                .setIntent(shortcutIntent)
+                .build()
+
+            val success = ShortcutManagerCompat.requestPinShortcut(this, pinShortcutInfo, null)
+            if (success) {
+                Toast.makeText(this, "Acceso directo solicitado para \"${file.name}\"", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "No se pudo crear el acceso directo", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Tu pantalla de inicio no admite accesos directos", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showGroupPopupMenu(groupId: String, groupName: String, anchor: View) {
