@@ -39,7 +39,7 @@ A diferencia de los visores de texto convencionales, **HTML Viewer** incorpora u
 * Soporte nativo para barras de navegación gestual y barra de estado (*Edge-to-Edge WindowInsets*).
 
 ### 2. 📂 Organización Inteligente de Carpetas y Materias
-* **Auto-escaneo de Assets (`assets/html_study/`)**: Al iniciar, la app detecta automáticamente las carpetas de estudio y las clasifica como grupos de materias con sus respectivos archivos HTML.
+* **Autoescaneo de Assets (`assets/html_study/`)**: Al iniciar, la app detecta automáticamente las carpetas de estudio y las clasifica como grupos de materias con sus respectivos archivos HTML.
 * Filas descongestionadas de 2 líneas con nombre a ancho completo y contador de archivos sutil (*"X archivos"*).
 * Expansión/colapso con un solo toque en toda la fila de la carpeta.
 * Archivos sueltos listados de forma limpia al final de la biblioteca.
@@ -55,7 +55,7 @@ A diferencia de los visores de texto convencionales, **HTML Viewer** incorpora u
   * 📄 **Importar archivos HTML** desde el almacenamiento del dispositivo.
 
 ### 5. 📲 Accesos Directos Temáticos en Pantalla de Inicio (*Homescreen Shortcuts*)
-* Permite anclar cualquier cuestionario o página web directamente al escritorio del celular con 1 toque.
+* Permite anclar cualquier cuestionario o página web directamente al escritorio del celular con un toque.
 * **Iconos temáticos vectoriales en alta resolución (192x192)** para launchers que ocultan el texto de las aplicaciones:
   * 📊 **Estadística Descriptiva** *(Histograma y curvas)*
   * 🎓 **Cuestionario General / Estudio** *(Birrete académico)*
